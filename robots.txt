@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://usamarehman.dev/sitemap.xml
+Sitemap: https://www.usamarehman.dev/sitemap.xml

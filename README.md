@@ -2,7 +2,7 @@
 
 Personal portfolio site for Usama Rehman — solo platform engineer.
 
-**Live:** [usamarehman.dev](https://usamarehman.dev) (pending DNS / Vercel deploy)
+**Live:** [usamarehman.dev](https://www.usamarehman.dev) (pending DNS / Vercel deploy)
 
 ## Stack
 
