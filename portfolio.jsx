@@ -100,29 +100,79 @@ const CASES = [
       "Flask CRM: 26 blueprints, 51 models, Anthropic Claude for assistant + measurement extraction",
     ],
   },
+];
+
+// Client engagements — delivered under NDA via an agency partner.
+// Described at a general level (sector + system + stack), no client names or
+// proprietary project names, per the confidentiality terms of each contract.
+const CLIENT_WORK = [
   {
-    id: "ai-automation",
     idx: "05",
-    title: "Recent <em>Upwork engagements</em> — AI agents, n8n workflows, and the integrations nobody else could get to talk",
-    client: "Multiple clients via Upwork",
-    clientNote: "47 contracts · $200K+ earned · 100% JSS · Top Rated Plus",
-    industry: "AI",
-    stack: ["n8n · Zapier · Make", "OpenAI + Claude SDKs", "Python · Node · FastAPI"],
-    impact: { value: "5.0", label: "every reviewed contract since Oct 2025" },
-    year: "2022–present",
-    duration: "Five-year track record",
-    role: "Sole engineer · multiple clients",
-    lead: "Recent Upwork engagements share a shape: n8n + an AI workflow + a stack of named APIs that need to actually talk to each other. AI Sales Coach (Fathom + n8n + Slack + AI analysis). WhatsApp pizza delivery automation (n8n + SQL). Trainerize + GoHighLevel + Meta Leads system rebuild. Content generation tool with vector RAG. Every reviewed contract since October 2025: 5.0.",
-    bullets: [
-      "Two multi-year anchor clients: $103K Webflow Page Speed + ongoing $56K Company Website engagement since 2023",
-      "Recent recurring stack: n8n, GoHighLevel, Trainerize, Fathom, OpenAI, Claude, Meta CAPI, Slack",
-      "Verbatim feedback: \"tech wizard\", \"one of the best developers I've found on this platform\", \"EXACTLY what we needed, and more\"",
-      "4,560 hours billed across the 5 years · current rate $50/hr",
-    ],
+    title: "Hotel operations intelligence portal",
+    sector: "Hospitality · multi-property hotel group",
+    blurb: "Real-time property KPI cockpit — occupancy, RevPAR, labor, market share — with a 16-alert engine, a 60-second GM daily confirmation flow, vendor data integrations (PMS, market feed, payroll), and n8n notification workflows. Config-driven multi-property: adding a property is an insert, not a rebuild.",
+    stack: ["Next.js 16", "Supabase · Postgres RLS", "Vercel", "n8n"],
+    year: "2026",
+  },
+  {
+    idx: "06",
+    title: "AI deal-origination engine",
+    sector: "Private equity · M&A advisory",
+    blurb: "Automated acquisition-sourcing pipeline: parallel search across multiple data vendors, a dedup engine (domain match + fuzzy name), Claude-scored fit ratings with written rationale per target, contact enrichment for qualified targets, and a client-ready Excel export.",
+    stack: ["Node.js", "Claude API", "n8n", "Supabase"],
+    year: "2026",
+  },
+  {
+    idx: "07",
+    title: "AI sales agent & outreach pipeline",
+    sector: "Residential solar",
+    blurb: "A live AI conversation agent that qualifies, educates, prices (territory-aware via a solar design API), and hands off to the sales team — wired end-to-end from cold outreach through reply detection into the agent, with infrastructure hardening and silent-failure cleanup.",
+    stack: ["n8n", "OpenAI", "Airtable", "Instantly · Clay"],
+    year: "2026",
+  },
+  {
+    idx: "08",
+    title: "Smart production scheduling system",
+    sector: "Sign & graphics manufacturing",
+    blurb: "AI proof-PDF extraction, a production-time calculator across 8+ operation types built from the client's own rate cards, and a capacity-aware scheduling engine — all migrated from custom TypeScript into maintainable n8n workflows, with operational dashboards.",
+    stack: ["n8n", "Google Gemini", "Monday.com", "TypeScript"],
+    year: "2026",
+  },
+  {
+    idx: "09",
+    title: "Order, freight & operations automation",
+    sector: "Marine equipment distributor",
+    blurb: "Layered, fault-isolated automation: PO intake (PDF OCR + EDI feeds) against a self-learning SKU/unit mapping store, automated ERP order creation with conflict-safe numbering, two-stage freight booking, and tracking loopback into one-click invoicing.",
+    stack: ["n8n", "OCR", "Fishbowl ERP", "FreightView · C.H. Robinson"],
+    year: "2026",
+  },
+  {
+    idx: "10",
+    title: "Automated property intelligence system",
+    sector: "Real estate lead intelligence",
+    blurb: "Monitors 28 municipal planning, zoning, and review boards across 7 ZIP codes; extracts property signals and contacts from meeting documents with AI; scores and tiers leads deterministically; and ships structured weekly and monthly data packages.",
+    stack: ["n8n", "OpenAI", "Airtable", "Apify · Regrid"],
+    year: "2026",
+  },
+  {
+    idx: "11",
+    title: "Sales backend automation — 3 modules",
+    sector: "Sales consultancy",
+    blurb: "An AI diagnostic-email engine, a conditional sales-script + one-page \"battle map\" PDF generator, and a Stream Deck webhook \"kill switch\" for instant contract delivery mid-call — each output mobile-responsive and delivered transactionally.",
+    stack: ["Make.com", "Airtable", "Gemini · GPT", "Postmark · PDFMonkey"],
+    year: "2026",
+  },
+  {
+    idx: "12",
+    title: "Personality assessment → PDF report engine",
+    sector: "Coaching · assessment",
+    blurb: "A 50-question Typeform feeding a scoring and classification engine (personality type, risk/reward composites, driver) that resolves conditional logic and renders a dynamic, personalized PDF report delivered to each respondent.",
+    stack: ["Typeform", "n8n", "PDF generation"],
+    year: "2026",
   },
 ];
 
-const INDUSTRIES = ["All", "Operations", "SaaS", "AI"];
+const INDUSTRIES = ["All", "Operations", "SaaS"];
 
 function useReveal() {
   const ref = useRef(null);
@@ -146,6 +196,7 @@ function Nav({ theme, onTheme }) {
       <div className="center serif"><i>Usama Rehman</i> &nbsp;—&nbsp; <span className="sans" style={{fontStyle:"normal",fontSize:13,letterSpacing:".02em",color:"var(--ink-3)"}}>Solo platform engineer</span></div>
       <div className="right sans">
         <a href="#work">Work</a>
+        <a href="#client-work">Clients</a>
         <a href="#contact">Contact</a>
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
@@ -161,6 +212,10 @@ function Nav({ theme, onTheme }) {
 function Hero() {
   return (
     <section className="hero">
+      <figure className="portrait rv">
+        <img src="profile.png" alt="Usama Rehman" width="300" height="380" loading="eager" />
+        <figcaption className="mono">Usama Rehman<span>Hyderabad · PK</span></figcaption>
+      </figure>
       <div className="eyebrow rv"><span className="bar"></span>Solo platform engineer · 001 / Portfolio · MMXXVI</div>
 
       <h1>
@@ -175,13 +230,15 @@ function Hero() {
           <p>
             Backend, frontend, mobile, infra — all of it, end to end. I take on the
             full build of production platforms most teams would spread across four
-            people. Five shipped since 2022. Three still operate under me.
+            people. Five platforms I own and operate, plus eight documented client
+            systems shipped — AI agents, automation pipelines, and the integrations
+            nobody else could get to talk.
           </p>
         </div>
         <div className="col rv">
           <div className="k mono">Track record</div>
           <div className="stat-row">
-            <div className="stat"><b>5</b><span>production<br/>platforms shipped</span></div>
+            <div className="stat"><b>5+8</b><span>platforms built<br/>+ client systems</span></div>
             <div className="stat"><b>$200K+</b><span>Upwork earned<br/>47 contracts · 100% JSS</span></div>
           </div>
         </div>
@@ -300,6 +357,25 @@ function Cases({ filter }) {
   );
 }
 
+function ClientWork() {
+  return (
+    <div className="client-work">
+      {CLIENT_WORK.map(c => (
+        <article className="cw-row rv" key={c.idx}>
+          <div className="cw-idx mono">{c.idx}</div>
+          <div className="cw-body">
+            <div className="cw-title serif">{c.title}</div>
+            <div className="cw-sector sans">{c.sector}</div>
+            <p className="cw-blurb">{c.blurb}</p>
+            <ul className="cw-stack mono">{c.stack.map(s => <li key={s}>{s}</li>)}</ul>
+          </div>
+          <div className="cw-year mono">{c.year}</div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer className="foot rv" id="contact">
@@ -359,9 +435,13 @@ function App() {
       <Nav theme={t.theme} onTheme={(v) => setTweak('theme', v)} />
       <Hero />
       <div id="work">
-        <SectionHeader num="§ 02" title="Selected <em>work</em>" count={`${CASES.length} platforms`} />
+        <SectionHeader num="§ 02" title="Platforms I <em>build &amp; operate</em>" count={`${CASES.length} platforms`} />
         <Filters active={filter} setActive={setFilter} counts={counts} visible={t.showFilters} />
         <Cases filter={filter} />
+      </div>
+      <div id="client-work">
+        <SectionHeader num="§ 03" title="Client <em>engagements</em>" count={`${CLIENT_WORK.length} systems · under NDA`} />
+        <ClientWork />
       </div>
       <Footer />
       <Colophon />
