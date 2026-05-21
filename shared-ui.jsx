@@ -49,14 +49,14 @@ function Nav({ theme, onTheme, current }) {
         <span>Hyderabad, PK · GMT+5</span>
       </div>
       <div className="center serif">
-        <a href="/"><i>Usama Rehman</i></a>
+        <a href="index.html"><i>Usama Rehman</i></a>
         <span className="sans" style={{fontStyle:"normal",fontSize:13,letterSpacing:".02em",color:"var(--ink-3)",marginLeft:8}}>— Solo platform engineer</span>
       </div>
       <div className="right sans">
-        <a href="/#work" className={cls('work')}>Work</a>
-        <a href="/#client-work" className={cls('clients')}>Clients</a>
-        <a href="/notes" className={cls('notes')}>Notes</a>
-        <a href="/#contact">Contact</a>
+        <a href="index.html#work" className={cls('work')}>Work</a>
+        <a href="index.html#client-work" className={cls('clients')}>Clients</a>
+        <a href="notes.html" className={cls('notes')}>Notes</a>
+        <a href="index.html#contact">Contact</a>
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
         <button className="theme-btn" onClick={() => onTheme(theme === 'light' ? 'dark' : 'light')}>
@@ -107,12 +107,35 @@ function Colophon() {
 function useReveal() {
   const ref = useRef(null);
   useEffect(() => {
-    const els = ref.current?.querySelectorAll('.rv') ?? [];
-    els.forEach((el, i) => {
-      if (!el.style.getPropertyValue('--rv-d')) {
-        el.style.setProperty('--rv-d', (80 + i * 70) + 'ms');
-      }
-    });
+    if (!ref.current) return;
+    let queue = [];
+    let frame = null;
+    const flush = () => {
+      queue.forEach((el, i) => {
+        if (!el.style.getPropertyValue('--rv-d')) {
+          el.style.setProperty('--rv-d', (i * 80) + 'ms');
+        }
+        el.setAttribute('data-revealed', 'true');
+      });
+      queue = [];
+      frame = null;
+    };
+    const intersection = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          queue.push(e.target);
+          intersection.unobserve(e.target);
+        }
+      });
+      if (!frame && queue.length) frame = requestAnimationFrame(flush);
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    const observeUnrevealed = () => {
+      ref.current.querySelectorAll('.rv:not([data-revealed="true"])').forEach(el => intersection.observe(el));
+    };
+    observeUnrevealed();
+    const mutation = new MutationObserver(() => observeUnrevealed());
+    mutation.observe(ref.current, { childList: true, subtree: true });
+    return () => { intersection.disconnect(); mutation.disconnect(); };
   }, []);
   return ref;
 }

@@ -60,6 +60,17 @@
   .nrow .arrow{width:28px;height:28px;border:.5px solid var(--rule);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:all .3s cubic-bezier(.2,.7,.2,1)}
   .nrow:hover .arrow{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(45deg)}
 
+  /* Optional thumbnail when a note has a cover image */
+  .nrow-body{display:flex;gap:20px;align-items:flex-start}
+  .nrow-thumb{
+    flex:0 0 120px;width:120px;height:84px;border-radius:4px;overflow:hidden;
+    border:.5px solid var(--rule);background:var(--paper-2);
+    transition:transform .35s ease;
+  }
+  .nrow-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.92)}
+  .nrow:hover .nrow-thumb{transform:scale(.985)}
+  .nrow-text{flex:1;min-width:0}
+
   /* mobile: collapse the 5-col grid to a stacked card */
   @media (max-width:900px){
     .nrow{
@@ -76,9 +87,16 @@
     .nrow .meta{grid-area:tag;flex-direction:row}
     .nrow .meta .min{display:none}
     .nrow .arrow{grid-area:arrow}
-    .nrow h3{grid-area:title;font-size:21px}
-    .nrow .dek{grid-area:dek;margin:0;font-size:14.5px}
+    .nrow .nrow-body{grid-area:title}
+    .nrow .nrow-body{flex-direction:row;gap:14px}
+    .nrow .nrow-thumb{flex:0 0 88px;width:88px;height:64px}
+    .nrow h3{font-size:21px}
+    .nrow .dek{margin:0;font-size:14.5px}
     .nrow .date{grid-area:date;font-size:12px}
+  }
+  @media (max-width:560px){
+    .nrow .nrow-body{flex-direction:column}
+    .nrow .nrow-thumb{width:100%;height:140px;flex-basis:auto}
   }
 
   /* ── archive sidebar ── */

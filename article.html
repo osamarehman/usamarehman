@@ -44,6 +44,24 @@
     .article-head h1{font-size:34px}
   }
 
+  /* ── article: cover ── */
+  .article-cover{margin:8px 0 0;padding:0}
+  .article-cover img{
+    display:block;width:100%;height:auto;max-height:560px;object-fit:cover;
+    border-radius:6px;border:.5px solid var(--rule);
+    background:var(--paper-2);
+  }
+  .article-cover figcaption{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-3);
+    padding:10px 2px 0;border-top:.5px solid var(--rule-soft);margin-top:10px;
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .article-cover figcaption::before{content:"Fig. 01"}
+  @media (max-width:680px){
+    .article-cover img{max-height:300px}
+  }
+
   /* ── article: body ── */
   .prose{font-family:"Instrument Serif",serif;font-size:20px;line-height:1.55;color:var(--ink);max-width:64ch;margin:0}
   .prose > * + *{margin-top:1.05em}
@@ -67,7 +85,9 @@
   .prose code{font-family:"JetBrains Mono",monospace;font-size:.85em;background:var(--paper-2);padding:1px 6px;border-radius:3px;border:.5px solid var(--rule-soft)}
   .prose .marginalia{font-family:"Instrument Sans",sans-serif;font-size:14px;color:var(--ink-3);font-style:italic}
 
-  .article-body{display:grid;grid-template-columns:1fr 200px;gap:64px;padding:36px 0 24px;align-items:start}
+  .article-body{display:grid;grid-template-columns:minmax(0,64ch) 1fr 240px;gap:48px;padding:36px 0 24px;align-items:start}
+  .article-body .prose{grid-column:1}
+  .article-body .meter{grid-column:3}
   .article-body .meter{position:sticky;top:24px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;display:flex;flex-direction:column;gap:14px}
   .article-body .meter .bar-out{height:2px;background:var(--rule);position:relative;overflow:hidden}
   .article-body .meter .bar-in{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:var(--p,0%);transition:width .15s linear}
@@ -76,6 +96,7 @@
 
   @media (max-width:900px){
     .article-body{grid-template-columns:1fr;gap:24px}
+    .article-body .prose,.article-body .meter{grid-column:1}
     .article-body .meter{position:static;flex-direction:row;align-items:center;gap:12px}
     .article-body .meter .toc{display:none}
     .article-body .meter .bar-out{flex:1}

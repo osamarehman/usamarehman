@@ -16,6 +16,10 @@ const NOTES = [
     featured: true,
     lead: true,
     status: "draft",
+    // Optional cover image — drop a path or URL. Remove the key to fall back
+    // to the auto-generated CSS glyph (lead) or no image (small cards / list).
+    cover: "https://picsum.photos/seed/spreadsheet-debt/1600/900",
+    coverAlt: "Stacks of paper ledgers and printed spreadsheets",
   },
   {
     slug: "draft-discovery-week",
@@ -28,6 +32,8 @@ const NOTES = [
     dateLabel: "Mar 28, 2026",
     featured: true,
     status: "draft",
+    cover: "https://picsum.photos/seed/discovery-week/1600/900",
+    coverAlt: "Operations team whiteboard session",
   },
   {
     slug: "draft-boring-stacks",
@@ -40,6 +46,7 @@ const NOTES = [
     dateLabel: "Mar 9, 2026",
     featured: true,
     status: "draft",
+    // no cover → falls back to glyph in featured section, no thumb in list
   },
 ];
 

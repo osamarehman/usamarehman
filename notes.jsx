@@ -5,11 +5,18 @@ const { useState, useMemo } = React;
 function NoteRow({ n }) {
   const draft = n.status === 'draft';
   return (
-    <a className="nrow" href={`/article?slug=${n.slug}`}>
+    <a className="nrow" href={`article.html?slug=${n.slug}`}>
       <div className="idx mono">{n.idx}</div>
-      <div>
-        <h3>{renderEm(n.title)}</h3>
-        <p className="dek">{n.dek}</p>
+      <div className="nrow-body">
+        {n.cover && (
+          <div className="nrow-thumb" aria-hidden="true">
+            <img src={n.cover} alt={n.coverAlt || ""} loading="lazy" />
+          </div>
+        )}
+        <div className="nrow-text">
+          <h3>{renderEm(n.title)}</h3>
+          <p className="dek">{n.dek}</p>
+        </div>
       </div>
       <div className="meta">
         <span className="tag">{n.tag}</span>

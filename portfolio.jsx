@@ -4,8 +4,8 @@ const { useState, useEffect, useMemo, useRef } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "light",
-  "accent": "#B8552E",
-  "density": "regular",
+  "accent": "#0080ff",
+  "density": "comfy",
   "showFilters": true
 }/*EDITMODE-END*/;
 
@@ -174,15 +174,85 @@ const CLIENT_WORK = [
 
 const INDUSTRIES = ["All", "Operations", "SaaS"];
 
+// Scroll-triggered reveal — IntersectionObserver, batches sequential reveals.
+// Watches via MutationObserver so newly-added .rv elements (filter changes,
+// expanded details, etc.) get observed too. Uses a data attribute instead of a
+// class so React's className reconciliation can't wipe it on re-render.
 function useReveal() {
   const ref = useRef(null);
   useEffect(() => {
-    const els = ref.current?.querySelectorAll('.rv') ?? [];
-    els.forEach((el, i) => {
-      el.style.setProperty('--rv-d', (80 + i * 90) + 'ms');
-    });
+    if (!ref.current) return;
+    let queue = [];
+    let frame = null;
+    const flush = () => {
+      queue.forEach((el, i) => {
+        if (!el.style.getPropertyValue('--rv-d')) {
+          el.style.setProperty('--rv-d', (i * 80) + 'ms');
+        }
+        el.setAttribute('data-revealed', 'true');
+      });
+      queue = [];
+      frame = null;
+    };
+    const intersection = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          queue.push(e.target);
+          intersection.unobserve(e.target);
+        }
+      });
+      if (!frame && queue.length) frame = requestAnimationFrame(flush);
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+    const observeUnrevealed = () => {
+      ref.current.querySelectorAll('.rv:not([data-revealed="true"])').forEach(el => intersection.observe(el));
+    };
+    observeUnrevealed();
+
+    const mutation = new MutationObserver(() => observeUnrevealed());
+    mutation.observe(ref.current, { childList: true, subtree: true });
+
+    return () => {
+      intersection.disconnect();
+      mutation.disconnect();
+    };
   }, []);
   return ref;
+}
+
+// Counter — animates from 0 to `to` once it enters viewport.
+function Counter({ to, prefix = "", suffix = "", duration = 1400 }) {
+  const [val, setVal] = useState(0);
+  const elRef = useRef(null);
+  const started = useRef(false);
+  useEffect(() => {
+    if (!elRef.current) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !started.current) {
+          started.current = true;
+          obs.disconnect();
+          const start = performance.now();
+          const step = (now) => {
+            const t = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            setVal(Math.round(to * eased));
+            if (t < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      });
+    }, { threshold: 0.5 });
+    obs.observe(elRef.current);
+    return () => obs.disconnect();
+  }, [to, duration]);
+  return <span ref={elRef}>{prefix}{val}{suffix}</span>;
+}
+
+function Words({ text }) {
+  return text.split(/\s+/).filter(Boolean).map((w, i) =>
+    <span key={i} className="rv word">{w}</span>
+  );
 }
 
 function Nav({ theme, onTheme }) {
@@ -197,7 +267,7 @@ function Nav({ theme, onTheme }) {
       <div className="right sans">
         <a href="#work">Work</a>
         <a href="#client-work">Clients</a>
-        <a href="/notes">Notes</a>
+        <a href="notes.html">Notes</a>
         <a href="#contact">Contact</a>
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
@@ -220,9 +290,12 @@ function Hero() {
       <div className="eyebrow rv"><span className="bar"></span>Solo platform engineer · 001 / Portfolio · MMXXVI</div>
 
       <h1>
-        <span className="rv" style={{display:"block"}}>I build and operate</span>
-        <span className="rv" style={{display:"block"}}>production AI platforms.</span>
-        <span className="rv" style={{display:"block"}}><em>Solo<span style={{color:"var(--accent)"}}>.</span></em></span>
+        <span style={{display:"block"}}><Words text="I build and operate" /></span>
+        <span style={{display:"block"}}><Words text="production AI platforms." /></span>
+        <span style={{display:"block"}}>
+          <em><span className="rv word">Solo</span></em>
+          <span className="rv word" style={{color:"var(--accent)"}}>.</span>
+        </span>
       </h1>
 
       <div className="hero-meta">
@@ -239,8 +312,8 @@ function Hero() {
         <div className="col rv">
           <div className="k mono">Track record</div>
           <div className="stat-row">
-            <div className="stat"><b>5+8</b><span>platforms built<br/>+ client systems</span></div>
-            <div className="stat"><b>$200K+</b><span>Upwork earned<br/>47 contracts · 100% JSS</span></div>
+            <div className="stat"><b><Counter to={5} />+<Counter to={8} /></b><span>platforms built<br/>+ client systems</span></div>
+            <div className="stat"><b><Counter to={200} prefix="$" suffix="K+" /></b><span>Upwork earned<br/>47 contracts · 100% JSS</span></div>
           </div>
         </div>
         <div className="col rv">
@@ -330,10 +403,15 @@ function CaseRow({ c, open, onToggle }) {
                 <ul>{c.bullets.map(b => <li key={b}>{b}</li>)}</ul>
               </div>
             </div>
-            <div className="visual">
-              <span>Fig. {c.idx} · {c.client}</span>
-              <span>Placeholder · UI screenshot</span>
-            </div>
+            {c.image && (
+              <figure className="visual">
+                <img src={c.image} alt={c.imageAlt || `${c.client} — ${c.title.replace(/<[^>]+>/g,'')}`} loading="lazy" />
+                <figcaption>
+                  <span>Fig. {c.idx} · {c.client}</span>
+                  <span>{c.imageAlt || ""}</span>
+                </figcaption>
+              </figure>
+            )}
           </div>
         </div>
       </div>
@@ -387,8 +465,10 @@ function FeaturedNotes() {
   const isDraft = (n) => n.status === 'draft';
   return (
     <div className="featured rv">
-      <a className="fn lead" href={`/article?slug=${lead.slug}`}>
-        <div className="glyph"></div>
+      <a className="fn lead" href={`article.html?slug=${lead.slug}`}>
+        {lead.cover
+          ? <div className="cover"><img src={lead.cover} alt={lead.coverAlt || ""} loading="lazy" /></div>
+          : <div className="glyph"></div>}
         <div className="fn-meta">
           <span><span className="dot"></span>Featured · {lead.tag}</span>
           <span>{lead.readMin} min</span>
@@ -403,7 +483,8 @@ function FeaturedNotes() {
         </div>
       </a>
       {rest.map(n => (
-        <a key={n.slug} className="fn" href={`/article?slug=${n.slug}`}>
+        <a key={n.slug} className="fn" href={`article.html?slug=${n.slug}`}>
+          {n.cover && <div className="cover small"><img src={n.cover} alt={n.coverAlt || ""} loading="lazy" /></div>}
           <div className="fn-meta">
             <span className="tag">{n.tag}</span>
             <span>{n.readMin} min</span>
@@ -495,7 +576,7 @@ function App() {
         <ClientWork />
       </div>
       <div id="notes">
-        <SectionHeader num="§ 04" title="Featured <em>notes</em>" count={<a href="/notes" style={{color:"inherit"}}>All notes ↗</a>} />
+        <SectionHeader num="§ 04" title="Featured <em>notes</em>" count={<a href="notes.html" style={{color:"inherit"}}>All notes ↗</a>} />
         <FeaturedNotes />
       </div>
       <Footer />
@@ -504,7 +585,7 @@ function App() {
       <TweaksPanel>
         <TweakSection label="Theme" />
         <TweakRadio label="Mode" value={t.theme} options={["light","dark"]} onChange={(v) => setTweak('theme', v)} />
-        <TweakColor label="Accent" value={t.accent} onChange={(v) => setTweak('accent', v)} />
+        <TweakColor label="Accent" value={t.accent} options={["#0080ff","#B8552E","#1F8A5B","#6B4F8E"]} onChange={(v) => setTweak('accent', v)} />
         <TweakSection label="Layout" />
         <TweakRadio label="Density" value={t.density} options={["compact","regular","comfy"]} onChange={(v) => setTweak('density', v)} />
         <TweakToggle label="Show filters" value={t.showFilters} onChange={(v) => setTweak('showFilters', v)} />

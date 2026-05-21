@@ -162,14 +162,14 @@ function ArticleApp() {
   }, [note]);
 
   return (
-    <div className="frame narrow" ref={ref}>
+    <div className="frame" ref={ref}>
       <Nav theme={t.theme} onTheme={t.setTheme} current="notes" />
 
       <header className="article-head">
         <div className="crumbs rv">
-          <a href="/">Home</a>
+          <a href="index.html">Home</a>
           <span className="sep">/</span>
-          <a href="/notes">Notes</a>
+          <a href="notes.html">Notes</a>
           <span className="sep">/</span>
           <span style={{color:"var(--ink-2)"}}>{note.idx}</span>
         </div>
@@ -183,6 +183,13 @@ function ArticleApp() {
         </div>
       </header>
 
+      {note.cover && (
+        <figure className="article-cover rv">
+          <img src={note.cover} alt={note.coverAlt || ""} loading="eager" />
+          {note.coverAlt && <figcaption>{note.coverAlt}</figcaption>}
+        </figure>
+      )}
+
       <div className="article-body">
         <article className="prose rv">
           {body}
@@ -192,13 +199,13 @@ function ArticleApp() {
 
       <nav className="nextprev">
         {prev ? (
-          <a href={`/article?slug=${prev.slug}`}>
+          <a href={`article.html?slug=${prev.slug}`}>
             <span className="k">← Previous · {prev.idx}</span>
             <span className="t">{renderEm(prev.title)}</span>
           </a>
         ) : <span></span>}
         {next ? (
-          <a className="right" href={`/article?slug=${next.slug}`}>
+          <a className="right" href={`article.html?slug=${next.slug}`}>
             <span className="k">Next · {next.idx} →</span>
             <span className="t">{renderEm(next.title)}</span>
           </a>
