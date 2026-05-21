@@ -16,13 +16,22 @@ Vercel auto-serves static HTML at the repo root. No `vercel.json` or framework p
 
 ## Files
 
-- `index.html` — page shell + styles + script tags
-- `portfolio.jsx` — content + components
+- `index.html` — page shell + styles + script tags (home)
+- `portfolio.jsx` — content + components (home)
+- `notes.html` + `notes.jsx` — blog archive
+- `article.html` + `article.jsx` — long-read template (reads `?slug=` query param)
+- `notes-data.js` — single source of truth for notes (catalog of essays)
+- `shared-ui.jsx` — Nav / Footer / Colophon / useTheme used by notes + article pages
+- `portfolio.css` — shared tokens, reveal animation, tweaks-panel overrides for sub-pages
+- `theme-init.js` — sets `data-theme` from `localStorage` before paint (no flash)
 - `tweaks-panel.jsx` — developer-mode live editor (dormant in production)
+- `sitemap.xml`, `robots.txt`, `vercel.json` — deploy config
 
 ## Edit
 
-To update a case study or hero copy, edit the `CASES` array or the `Hero` / `Footer` components in `portfolio.jsx`. Push to `main`; Vercel rebuilds on push.
+- **Case study or hero copy** — edit the `CASES` / `CLIENT_WORK` arrays or the `Hero` / `Footer` components in `portfolio.jsx`.
+- **New essay** — add a record to `NOTES` in `notes-data.js`. If `status: "draft"` is omitted, the post counts as published and the date label shows on the archive row. Edit `ARTICLE_BODY` in `article.jsx` to add the long-form body (keyed by `slug`).
+- Push to `main`; Vercel rebuilds on push.
 
 ## Local preview
 

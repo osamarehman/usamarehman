@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notes — Usama Rehman</title>
+<meta name="description" content="Essay by Usama Rehman — field notes from shipping production AI platforms solo." />
+<meta name="author" content="Usama Rehman" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#1A1814" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/profile.png" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Usama Rehman" />
+<meta property="og:image" content="https://www.usamarehman.dev/profile.png" />
+
+<script src="theme-init.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portfolio.css">
+
+<style>
+  /* ── article: header ── */
+  .article-head{padding:48px 0 36px;display:grid;grid-template-columns:1fr;gap:24px}
+  .article-head .crumbs{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .article-head .crumbs a:hover{color:var(--ink)}
+  .article-head .crumbs .sep{color:var(--ink-4)}
+  .article-head h1{font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(40px,5.6vw,76px);line-height:1.0;letter-spacing:-.025em;margin:0;color:var(--ink);max-width:18ch;padding-bottom:.12em}
+  .article-head h1 em{font-style:italic;color:var(--accent)}
+  .article-head .dek{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(20px,2.2vw,26px);line-height:1.35;color:var(--ink-2);margin:0;max-width:44ch}
+  .article-head .byline{
+    display:grid;grid-template-columns:repeat(4,auto);gap:18px 36px;justify-content:start;
+    padding:18px 0;border-top:.5px solid var(--rule);border-bottom:.5px solid var(--rule);
+    margin-top:16px;
+  }
+  .article-head .byline .k{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+  .article-head .byline .v{font-family:"Instrument Sans",sans-serif;font-size:13px;color:var(--ink)}
+  @media (max-width:680px){
+    .article-head{padding:24px 0 20px}
+    .article-head .byline{grid-template-columns:1fr 1fr;gap:14px 24px}
+    .article-head h1{font-size:34px}
+  }
+
+  /* ── article: body ── */
+  .prose{font-family:"Instrument Serif",serif;font-size:20px;line-height:1.55;color:var(--ink);max-width:64ch;margin:0}
+  .prose > * + *{margin-top:1.05em}
+  .prose .drop::first-letter{font-family:"Instrument Serif",serif;font-style:italic;font-size:5em;float:left;line-height:.85;padding:.05em .12em 0 0;color:var(--accent)}
+  .prose h2{font-family:"Instrument Serif",serif;font-weight:400;font-size:1.6em;line-height:1.1;letter-spacing:-.018em;margin-top:1.6em;color:var(--ink)}
+  .prose h2 em{font-style:italic;color:var(--accent)}
+  .prose blockquote{margin:1.4em 0;padding:0 0 0 24px;border-left:.5px solid var(--accent);font-style:italic;color:var(--ink-2);font-size:1.05em}
+  .prose .pull{
+    font-family:"Instrument Serif",serif;font-style:italic;
+    font-size:clamp(26px,3.2vw,38px);line-height:1.15;letter-spacing:-.015em;
+    color:var(--ink);margin:1.6em 0;padding:24px 0;
+    border-top:.5px solid var(--rule);border-bottom:.5px solid var(--rule);
+    max-width:none;
+  }
+  .prose .pull em{font-style:normal;color:var(--accent)}
+  .prose ul{padding-left:1.2em;margin:1.05em 0}
+  .prose ul li{margin:.4em 0}
+  .prose ul li::marker{color:var(--accent)}
+  .prose a{color:var(--ink);border-bottom:.5px solid var(--accent);transition:color .25s ease, background .25s ease;padding:0 1px}
+  .prose a:hover{background:color-mix(in oklab, var(--accent) 14%, transparent)}
+  .prose code{font-family:"JetBrains Mono",monospace;font-size:.85em;background:var(--paper-2);padding:1px 6px;border-radius:3px;border:.5px solid var(--rule-soft)}
+  .prose .marginalia{font-family:"Instrument Sans",sans-serif;font-size:14px;color:var(--ink-3);font-style:italic}
+
+  .article-body{display:grid;grid-template-columns:1fr 200px;gap:64px;padding:36px 0 24px;align-items:start}
+  .article-body .meter{position:sticky;top:24px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;display:flex;flex-direction:column;gap:14px}
+  .article-body .meter .bar-out{height:2px;background:var(--rule);position:relative;overflow:hidden}
+  .article-body .meter .bar-in{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:var(--p,0%);transition:width .15s linear}
+  .article-body .meter .toc a{display:block;padding:6px 0;color:var(--ink-3);border-bottom:.5px dashed var(--rule-soft);font-family:"Instrument Sans",sans-serif;font-size:12.5px;letter-spacing:0;text-transform:none}
+  .article-body .meter .toc a:hover{color:var(--ink)}
+
+  @media (max-width:900px){
+    .article-body{grid-template-columns:1fr;gap:24px}
+    .article-body .meter{position:static;flex-direction:row;align-items:center;gap:12px}
+    .article-body .meter .toc{display:none}
+    .article-body .meter .bar-out{flex:1}
+    .prose{font-size:18px}
+  }
+
+  /* ── next/prev ── */
+  .nextprev{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px;padding-top:36px;border-top:.5px solid var(--rule)}
+  .nextprev a{display:flex;flex-direction:column;gap:8px;padding:18px 0;color:var(--ink-2);transition:transform .35s ease}
+  .nextprev a:hover{transform:translateY(-2px);color:var(--ink)}
+  .nextprev .k{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  .nextprev .t{font-family:"Instrument Serif",serif;font-size:22px;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
+  .nextprev .right{text-align:right;align-items:flex-end}
+  @media (max-width:680px){
+    .nextprev{grid-template-columns:1fr;gap:8px}
+    .nextprev .right{text-align:left;align-items:flex-start}
+  }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script src="notes-data.js"></script>
+  <script type="text/babel" src="shared-ui.jsx"></script>
+  <script type="text/babel" src="article.jsx"></script>
+</body>
+</html>

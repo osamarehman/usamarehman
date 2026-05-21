@@ -197,6 +197,7 @@ function Nav({ theme, onTheme }) {
       <div className="right sans">
         <a href="#work">Work</a>
         <a href="#client-work">Clients</a>
+        <a href="/notes">Notes</a>
         <a href="#contact">Contact</a>
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
@@ -376,6 +377,51 @@ function ClientWork() {
   );
 }
 
+function FeaturedNotes() {
+  // NOTES is loaded as a global via notes-data.js
+  if (typeof window === 'undefined' || !window.NOTES || !window.NOTES.length) return null;
+  const featured = window.NOTES.filter(n => n.featured).slice(0, 3);
+  if (!featured.length) return null;
+  const lead = featured[0];
+  const rest = featured.slice(1);
+  const isDraft = (n) => n.status === 'draft';
+  return (
+    <div className="featured rv">
+      <a className="fn lead" href={`/article?slug=${lead.slug}`}>
+        <div className="glyph"></div>
+        <div className="fn-meta">
+          <span><span className="dot"></span>Featured · {lead.tag}</span>
+          <span>{lead.readMin} min</span>
+        </div>
+        <h3>{renderEm(lead.title)}</h3>
+        <p className="dek">{lead.dek}</p>
+        <div className="row-bottom">
+          <span className="tag">{isDraft(lead) ? <span className="badge">Draft</span> : lead.dateLabel}</span>
+          <span className="read">Read essay
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+          </span>
+        </div>
+      </a>
+      {rest.map(n => (
+        <a key={n.slug} className="fn" href={`/article?slug=${n.slug}`}>
+          <div className="fn-meta">
+            <span className="tag">{n.tag}</span>
+            <span>{n.readMin} min</span>
+          </div>
+          <h3>{renderEm(n.title)}</h3>
+          <p className="dek">{n.dek}</p>
+          <div className="row-bottom">
+            <span className="tag">{isDraft(n) ? <span className="badge">Draft</span> : n.dateLabel}</span>
+            <span className="read">Read
+              <svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer className="foot rv" id="contact">
@@ -417,11 +463,16 @@ function App() {
   const [filter, setFilter] = useState("All");
   const ref = useReveal();
 
-  // apply theme to <html>
+  // apply theme to <html> + persist to localStorage so it survives nav to /notes /article
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', t.theme);
     document.documentElement.setAttribute('data-density', t.density);
     document.documentElement.style.setProperty('--accent', t.accent);
+    try {
+      localStorage.setItem('usamar.theme', t.theme);
+      localStorage.setItem('usamar.density', t.density);
+      localStorage.setItem('usamar.accent', t.accent);
+    } catch (e) {}
   }, [t.theme, t.density, t.accent]);
 
   const counts = useMemo(() => {
@@ -442,6 +493,10 @@ function App() {
       <div id="client-work">
         <SectionHeader num="§ 03" title="Client <em>engagements</em>" count={`${CLIENT_WORK.length} systems · under NDA`} />
         <ClientWork />
+      </div>
+      <div id="notes">
+        <SectionHeader num="§ 04" title="Featured <em>notes</em>" count={<a href="/notes" style={{color:"inherit"}}>All notes ↗</a>} />
+        <FeaturedNotes />
       </div>
       <Footer />
       <Colophon />
