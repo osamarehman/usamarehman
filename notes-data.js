@@ -1,4 +1,4 @@
-// notes-data.js — Notes (essays) catalog.
+// notes-data.js - Notes (essays) catalog.
 // Currently seeded with 2 placeholder drafts so the blog system can be shipped
 // and styled. Replace these with real essays as you write them. The article
 // page reads from window.NOTES.
@@ -16,7 +16,7 @@ const NOTES = [
     featured: true,
     lead: true,
     status: "draft",
-    // Optional cover image — drop a path or URL. Remove the key to fall back
+    // Optional cover image - drop a path or URL. Remove the key to fall back
     // to the auto-generated CSS glyph (lead) or no image (small cards / list).
     cover: "https://picsum.photos/seed/spreadsheet-debt/1600/900",
     coverAlt: "Stacks of paper ledgers and printed spreadsheets",
@@ -25,7 +25,7 @@ const NOTES = [
     slug: "draft-discovery-week",
     idx: "N02",
     title: "Why I start every project with a paid <em>discovery</em> week",
-    dek: "A field report on what one focused week of shadowing an ops team reliably uncovers — and what it costs to skip it.",
+    dek: "A field report on what one focused week of shadowing an ops team reliably uncovers - and what it costs to skip it.",
     tag: "Process",
     readMin: 5,
     date: "2026-03-28",

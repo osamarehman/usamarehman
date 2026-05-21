@@ -1,15 +1,15 @@
-// article.jsx — one full long-read article
+// article.jsx - one full long-read article
 
 const { useState, useEffect } = React;
 
-// Article bodies, keyed by slug. Currently only the lead piece has a full body —
+// Article bodies, keyed by slug. Currently only the lead piece has a full body -
 // other slugs render the same body (placeholder) so links from notes work end-to-end.
 const ARTICLE_BODY = {
   __default__: (
     <>
       <p className="drop">
         Every workflow held together by a shared spreadsheet is a loan. The interest
-        payment is paid in small, quiet increments — a dispatcher pausing to scroll
+        payment is paid in small, quiet increments - a dispatcher pausing to scroll
         for the right row, a controller re-typing a number for the fourth time, a
         new hire spending their first week learning which tab is the real one. None
         of it shows up on a budget line. All of it shows up in how long it takes to
@@ -18,8 +18,8 @@ const ARTICLE_BODY = {
       <p>
         I’ve spent the last four years building software to retire these workflows.
         The pattern is so consistent it’s almost boring: a team starts with one
-        clever sheet, the sheet earns its keep, the sheet grows tabs, and then —
-        somewhere around year three — the sheet has become the operating system.
+        clever sheet, the sheet earns its keep, the sheet grows tabs, and then -
+        somewhere around year three - the sheet has become the operating system.
         Removing it is a project. Replacing it is a much bigger project. Ignoring
         it is the most expensive option of all.
       </p>
@@ -34,8 +34,8 @@ const ARTICLE_BODY = {
         Ask a tenured operator how a new hire learns the workflow. If the answer
         includes the phrase <i>“you kind of just figure it out”</i>, or there’s a
         video buried in a Notion page that someone made in 2022, the spreadsheet
-        has become tribal knowledge. That knowledge is real — it’s how the
-        business runs — but it lives in exactly one person’s head, and that
+        has become tribal knowledge. That knowledge is real - it’s how the
+        business runs - but it lives in exactly one person’s head, and that
         person is going on vacation next month.
       </p>
 
@@ -48,7 +48,7 @@ const ARTICLE_BODY = {
       <p>
         Watch how the team actually uses the sheet. If half the people open it,
         copy a range, paste it into their own scratch tab, and work from
-        there — the source of truth has already split. You’re running two
+        there - the source of truth has already split. You’re running two
         spreadsheets now. Soon you’ll be running four.
       </p>
       <p>
@@ -66,9 +66,9 @@ const ARTICLE_BODY = {
       <h2>3. The Monday morning <em>reconciliation</em></h2>
       <p>
         Ask whoever runs the team what they do first on Monday. If the answer
-        is <i>“I open the sheet and fix it”</i> — adjusting numbers because a
+        is <i>“I open the sheet and fix it”</i> - adjusting numbers because a
         weekend automation got out of sync, or because someone left a row half
-        edited Friday night — that fixing time is now a permanent line item in
+        edited Friday night - that fixing time is now a permanent line item in
         the operations budget. It scales linearly with volume. It is the
         cleanest possible signal that the spreadsheet is past its useful life.
       </p>
@@ -76,7 +76,7 @@ const ARTICLE_BODY = {
       <h2>4. The <em>“we can’t change that”</em> moment</h2>
       <p>
         The clearest sign of all: the team has stopped asking for changes. Someone
-        proposes a new product line, a new region, a new pricing rule — and the
+        proposes a new product line, a new region, a new pricing rule - and the
         answer comes back, half-apologetic, that <i>“the sheet can’t really do
         that.”</i> The spreadsheet has gone from enabling the business to
         constraining it. Every future opportunity now has to negotiate with a
@@ -86,8 +86,8 @@ const ARTICLE_BODY = {
       <h2>What to do about it</h2>
       <p>
         You don’t need to rip out the spreadsheet on day one. You need to model
-        the workflow as it actually runs, in something real — a small app, a
-        proper schema, an audit trail — and then walk the team across, one
+        the workflow as it actually runs, in something real - a small app, a
+        proper schema, an audit trail - and then walk the team across, one
         column at a time. The spreadsheet becomes a read-only mirror of the
         new source of truth, then a backup, then a memory.
       </p>
@@ -100,7 +100,7 @@ const ARTICLE_BODY = {
       <ul>
         <li>Start by mapping who reads from the sheet, who writes to it, and on what cadence.</li>
         <li>Identify the three or four objects the sheet is secretly modeling. Those are your tables.</li>
-        <li>Build the new tool around the team’s artifacts — the email, the scan, the form — not around the sheet’s columns.</li>
+        <li>Build the new tool around the team’s artifacts - the email, the scan, the form - not around the sheet’s columns.</li>
         <li>Keep the spreadsheet alive as a read-only view for as long as anyone needs it. Pride is not the goal.</li>
       </ul>
       <p>
@@ -158,7 +158,7 @@ function ArticleApp() {
   const body = ARTICLE_BODY[note.slug] || ARTICLE_BODY.__default__;
 
   useEffect(() => {
-    document.title = note.title.replace(/<[^>]+>/g,'') + ' — Usama Rehman';
+    document.title = note.title.replace(/<[^>]+>/g,'') + ' - Usama Rehman';
   }, [note]);
 
   return (

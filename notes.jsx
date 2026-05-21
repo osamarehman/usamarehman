@@ -1,4 +1,4 @@
-// notes.jsx — Notes archive page
+// notes.jsx - Notes archive page
 
 const { useState, useMemo } = React;
 
@@ -90,7 +90,7 @@ function NotesApp() {
             {filtered.map(n => <div key={n.slug} className="rv"><NoteRow n={n} /></div>)}
             {filtered.length === 0 && (
               <div style={{padding:"48px 4px",fontFamily:"Instrument Serif,serif",fontStyle:"italic",color:"var(--ink-3)",fontSize:20}}>
-                Nothing under <i>{tag}</i> yet — keep an eye on this space.
+                Nothing under <i>{tag}</i> yet - keep an eye on this space.
               </div>
             )}
           </div>
@@ -105,7 +105,7 @@ function NotesApp() {
           </div>
           <div className="quote">
             “Write the thing you wish someone had written for you six months ago.”
-            <span>— Working principle</span>
+            <span>- Working principle</span>
           </div>
         </aside>
       </div>

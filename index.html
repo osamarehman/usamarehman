@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Usama Rehman — Solo platform engineer · production AI platforms</title>
-<meta name="description" content="I build and operate production AI platforms. Solo — backend, frontend, mobile, infra. 5 platforms + 8 client systems shipped (FastAPI, React, Flutter, n8n, Postgres, Docker). Top Rated Plus on Upwork — $200K+, 100% JSS, 47 contracts." />
+<title>Usama Rehman - Solo platform engineer · production AI platforms</title>
+<meta name="description" content="I build and operate production AI platforms. Solo - backend, frontend, mobile, infra. 5 platforms + 8 client systems shipped (FastAPI, React, Flutter, n8n, Postgres, Docker). Top Rated Plus on Upwork - $200K+, 100% JSS, 47 contracts." />
 <meta name="author" content="Usama Rehman" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="theme-color" content="#1A1814" />
@@ -37,18 +37,18 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Usama Rehman" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:title" content="Usama Rehman — Solo platform engineer" />
-<meta property="og:description" content="I build and operate production AI platforms. Solo. 5 platforms + 8 client systems shipped. Top Rated Plus on Upwork — $200K+, 100% JSS, 47 contracts." />
+<meta property="og:title" content="Usama Rehman - Solo platform engineer" />
+<meta property="og:description" content="I build and operate production AI platforms. Solo. 5 platforms + 8 client systems shipped. Top Rated Plus on Upwork - $200K+, 100% JSS, 47 contracts." />
 <meta property="og:url" content="https://www.usamarehman.dev/" />
 <meta property="og:image" content="https://www.usamarehman.dev/profile.png" />
-<meta property="og:image:alt" content="Usama Rehman — solo platform engineer" />
+<meta property="og:image:alt" content="Usama Rehman - solo platform engineer" />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Usama Rehman — Solo platform engineer" />
+<meta name="twitter:title" content="Usama Rehman - Solo platform engineer" />
 <meta name="twitter:description" content="I build and operate production AI platforms. Solo. 5 platforms + 8 client systems shipped." />
 <meta name="twitter:image" content="https://www.usamarehman.dev/profile.png" />
-<meta name="twitter:image:alt" content="Usama Rehman — solo platform engineer" />
+<meta name="twitter:image:alt" content="Usama Rehman - solo platform engineer" />
 
 <!-- Structured data -->
 <script type="application/ld+json">
@@ -68,7 +68,7 @@
       "@type": "ProfilePage",
       "@id": "https://www.usamarehman.dev/#profilepage",
       "url": "https://www.usamarehman.dev/",
-      "name": "Usama Rehman — Solo platform engineer",
+      "name": "Usama Rehman - Solo platform engineer",
       "isPartOf": { "@id": "https://www.usamarehman.dev/#website" },
       "about": { "@id": "https://www.usamarehman.dev/#person" },
       "mainEntity": { "@id": "https://www.usamarehman.dev/#person" }
@@ -80,7 +80,7 @@
       "url": "https://www.usamarehman.dev/",
       "image": "https://www.usamarehman.dev/profile.png",
       "jobTitle": "Solo Platform Engineer",
-      "description": "Solo full-stack platform engineer who builds and operates production AI platforms end-to-end — backend, frontend, mobile, and infrastructure.",
+      "description": "Solo full-stack platform engineer who builds and operates production AI platforms end-to-end - backend, frontend, mobile, and infrastructure.",
       "email": "mailto:osamarehmanmughal@gmail.com",
       "address": {
         "@type": "PostalAddress",
@@ -190,14 +190,46 @@
   html[data-theme="dark"] .theme-btn .glyph::after{content:"";position:absolute;inset:0;background:var(--paper);transform:translate(35%,-35%);border-radius:50%}
 
   /* ---- hero ---- */
-  .hero{padding:88px 0 64px;position:relative}
+  .hero{padding:88px 0 64px;position:relative;perspective:1200px}
   .hero .portrait{
     position:absolute;top:150px;right:0;width:300px;margin:0;
+    transform-style:preserve-3d;will-change:transform;
+    transform:
+      rotateX(var(--tilt-x,0deg))
+      rotateY(var(--tilt-y,0deg))
+      translateY(var(--lift,0px))
+      translateZ(0);
+    transition:transform .18s cubic-bezier(.2,.7,.2,1);
   }
+  .hero .portrait:hover{ --lift:-10px }
   .hero .portrait img{
     display:block;width:300px;height:380px;border-radius:10px;
     object-fit:cover;object-position:center top;border:.5px solid var(--rule);
     filter:grayscale(0.12) contrast(1.02);
+    box-shadow:0 12px 28px -16px rgba(0,0,0,.25), 0 2px 4px rgba(0,0,0,.06);
+    transition:box-shadow .45s cubic-bezier(.2,.7,.2,1), filter .35s ease;
+  }
+  .hero .portrait:hover img{
+    box-shadow:0 44px 80px -28px rgba(0,0,0,.42), 0 8px 16px rgba(0,0,0,.10);
+    filter:grayscale(0) contrast(1.04);
+  }
+  /* subtle highlight that follows the cursor - gives the card a tactile sheen */
+  .hero .portrait::before{
+    content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;
+    background:radial-gradient(
+      280px circle at var(--glare-x,50%) var(--glare-y,50%),
+      rgba(255,255,255,.18), transparent 60%);
+    opacity:0;transition:opacity .35s ease;mix-blend-mode:soft-light;
+    z-index:2;
+  }
+  .hero .portrait:hover::before{ opacity:1 }
+  html[data-theme="dark"] .hero .portrait::before{
+    background:radial-gradient(280px circle at var(--glare-x,50%) var(--glare-y,50%),
+      rgba(255,255,255,.10), transparent 60%);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero .portrait,.hero .portrait img{transition:none}
+    .hero .portrait::before{display:none}
   }
   .hero .portrait figcaption{
     display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;
@@ -241,7 +273,7 @@
   .hero-meta .stat span{font-family:"Instrument Sans",sans-serif;font-size:12px;color:var(--ink-3)}
   .hero-meta .stat-row{display:flex;flex-direction:column;gap:18px}
 
-  /* staggered reveal — fires when element enters viewport (scroll-triggered).
+  /* staggered reveal - fires when element enters viewport (scroll-triggered).
      Uses a data attribute (not a class) so React reconciliation doesn't wipe it. */
   @keyframes rv-in {
     from { opacity:0; transform:translateY(14px); filter:blur(6px); }
@@ -258,7 +290,7 @@
   .hero h1 .word{display:inline-block;margin-right:.32em}
   .hero h1 .word:last-child{margin-right:0}
 
-  /* page transitions — fade body on internal nav */
+  /* page transitions - fade body on internal nav */
   body{ transition: opacity .28s ease, transform .28s ease; }
   body.page-out{ opacity:0; transform:translateY(-6px); }
 
@@ -357,6 +389,74 @@
     background:var(--paper);
   }
 
+  /* impact column fallback when no impact data */
+  .case .impact .impact-year{color:var(--ink-3);font-size:13px;letter-spacing:.05em;font-style:normal}
+
+  /* non-expandable rows: no hover affordance */
+  .case:not(.expandable):hover{background:transparent}
+  .case:not(.expandable) .row{cursor:default}
+
+  /* markdown body inside expanded case detail (when `detailsMd` is set) */
+  .case .detail-pad .case-md{
+    grid-column:2 / 4;margin-top:8px;
+    font-family:"Instrument Serif",serif;font-size:18px;line-height:1.55;
+    color:var(--ink-2);max-width:64ch;
+  }
+  .case .detail-pad .case-md > * + *{margin-top:1em}
+  .case .detail-pad .case-md h2,
+  .case .detail-pad .case-md h3{font-family:"Instrument Serif",serif;font-weight:400;letter-spacing:-.018em;color:var(--ink);line-height:1.15;margin-top:1.4em}
+  .case .detail-pad .case-md h2{font-size:1.4em}
+  .case .detail-pad .case-md h3{font-size:1.15em;color:var(--ink-2)}
+  .case .detail-pad .case-md h2 em,
+  .case .detail-pad .case-md h3 em{font-style:italic;color:var(--accent)}
+  .case .detail-pad .case-md ul,
+  .case .detail-pad .case-md ol{padding-left:1.2em;margin:1em 0}
+  .case .detail-pad .case-md ul li{margin:.35em 0}
+  .case .detail-pad .case-md ul li::marker{color:var(--accent)}
+  .case .detail-pad .case-md strong{font-weight:600;color:var(--ink)}
+  .case .detail-pad .case-md em{font-style:italic;color:var(--ink-2)}
+  .case .detail-pad .case-md a{color:var(--ink);border-bottom:.5px solid var(--accent);padding:0 1px;transition:background .25s ease}
+  .case .detail-pad .case-md a:hover{background:color-mix(in oklab, var(--accent) 14%, transparent)}
+  .case .detail-pad .case-md code{font-family:"JetBrains Mono",monospace;font-size:.85em;background:var(--paper-2);padding:1px 6px;border-radius:3px;border:.5px solid var(--rule-soft)}
+  .case .detail-pad .case-md blockquote{border-left:.5px solid var(--accent);padding-left:18px;color:var(--ink-2);font-style:italic;margin:1.2em 0}
+  .case .detail-pad .case-md img{
+    display:block;max-width:100%;height:auto;
+    border-radius:6px;border:.5px solid var(--rule);background:var(--paper-2);
+    margin:1.4em 0;filter:saturate(.96);
+  }
+  .case .detail-pad .case-md hr{border:none;border-top:.5px solid var(--rule);margin:2em 0}
+
+  /* "Read full case study" link inside expanded detail */
+  .case .case-readmore{
+    grid-column:2 / 4;display:inline-flex;align-items:center;gap:10px;
+    margin-top:18px;justify-self:start;
+    padding:10px 16px;border:.5px solid var(--rule);border-radius:999px;
+    font-family:"Instrument Sans",sans-serif;font-size:13px;color:var(--ink);
+    transition:all .25s ease;
+    width:fit-content;
+  }
+  .case .case-readmore:hover{
+    background:var(--ink);color:var(--paper);border-color:var(--ink);
+    gap:14px;
+  }
+  .case .case-readmore svg{transition:transform .25s ease}
+  .case .case-readmore:hover svg{transform:translate(2px,-2px)}
+
+  /* "Read full case study" link inside expanded detail */
+  .case .case-readmore{
+    grid-column:2 / 4;display:inline-flex;align-items:center;gap:10px;
+    margin-top:18px;justify-self:start;
+    padding:10px 16px;border:.5px solid var(--rule);border-radius:999px;
+    font-family:"Instrument Sans",sans-serif;font-size:13px;color:var(--ink);
+    transition:all .25s ease;
+  }
+  .case .case-readmore:hover{
+    background:var(--ink);color:var(--paper);border-color:var(--ink);
+    gap:14px;
+  }
+  .case .case-readmore svg{transition:transform .25s ease}
+  .case .case-readmore:hover svg{transform:translate(2px,-2px)}
+
   /* density */
   html[data-density="compact"] .case .row{padding:14px 4px}
   html[data-density="compact"] .case .title{font-size:24px}
@@ -367,10 +467,16 @@
   #client-work{margin-top:96px}
   .client-work{display:flex;flex-direction:column}
   .cw-row{
-    display:grid;grid-template-columns:48px 1fr 64px;gap:24px;
-    padding:26px 4px;border-top:.5px solid var(--rule-soft);align-items:start;
+    border-top:.5px solid var(--rule-soft);
+    transition:background .3s ease;
   }
   .cw-row:first-child{border-top:.5px solid var(--rule)}
+  .cw-row-main{
+    display:grid;grid-template-columns:48px 1fr 64px 28px;gap:24px;
+    padding:26px 4px;align-items:start;
+  }
+  .cw-row.expandable .cw-row-main{cursor:default}
+  .cw-row.expandable:hover{background:var(--paper-2)}
   .cw-idx{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);letter-spacing:.05em;padding-top:5px}
   .cw-title{font-family:"Instrument Serif",serif;font-size:25px;line-height:1.1;letter-spacing:-.015em;color:var(--ink)}
   .cw-sector{font-family:"Instrument Sans",sans-serif;font-size:12px;color:var(--accent);margin-top:4px;letter-spacing:.005em}
@@ -381,10 +487,51 @@
     color:var(--ink-3);border:.5px solid var(--rule);border-radius:999px;padding:3px 9px;
   }
   .cw-year{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);text-align:right;padding-top:5px}
+  .cw-arrow{
+    width:28px;height:28px;border:.5px solid var(--rule);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:var(--ink-3);
+    transition:all .3s cubic-bezier(.2,.7,.2,1);align-self:start;margin-top:2px;
+  }
+  .cw-row.expandable:hover .cw-arrow{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(45deg)}
+  .cw-row.open .cw-arrow{transform:rotate(135deg);background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+  .cw-detail{
+    display:grid;grid-template-rows:0fr;
+    transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .cw-row.open .cw-detail{grid-template-rows:1fr}
+  .cw-detail-inner{overflow:hidden}
+  .cw-detail-pad{padding:4px 4px 36px;display:grid;grid-template-columns:48px 1fr 64px;gap:24px}
+  .cw-md{
+    grid-column:2;font-family:"Instrument Serif",serif;font-size:18px;line-height:1.55;
+    color:var(--ink-2);max-width:64ch;
+  }
+  .cw-md > * + *{margin-top:1em}
+  .cw-md h2,.cw-md h3{font-family:"Instrument Serif",serif;font-weight:400;letter-spacing:-.018em;color:var(--ink);line-height:1.15;margin-top:1.4em}
+  .cw-md h2{font-size:1.4em}
+  .cw-md h3{font-size:1.15em;color:var(--ink-2)}
+  .cw-md h2 em,.cw-md h3 em{font-style:italic;color:var(--accent)}
+  .cw-md ul,.cw-md ol{padding-left:1.2em;margin:1em 0}
+  .cw-md ul li{margin:.35em 0}
+  .cw-md ul li::marker{color:var(--accent)}
+  .cw-md strong{font-weight:600;color:var(--ink)}
+  .cw-md em{font-style:italic;color:var(--ink-2)}
+  .cw-md a{color:var(--ink);border-bottom:.5px solid var(--accent);padding:0 1px;transition:background .25s ease}
+  .cw-md a:hover{background:color-mix(in oklab, var(--accent) 14%, transparent)}
+  .cw-md code{font-family:"JetBrains Mono",monospace;font-size:.85em;background:var(--paper-2);padding:1px 6px;border-radius:3px;border:.5px solid var(--rule-soft)}
+  .cw-md blockquote{border-left:.5px solid var(--accent);padding-left:18px;color:var(--ink-2);font-style:italic;margin:1.2em 0}
+  .cw-md img{
+    display:block;max-width:100%;height:auto;
+    border-radius:6px;border:.5px solid var(--rule);background:var(--paper-2);
+    margin:1.4em 0;filter:saturate(.96);
+  }
+  .cw-md hr{border:none;border-top:.5px solid var(--rule);margin:2em 0}
   @media (max-width:760px){
-    .cw-row{grid-template-columns:32px 1fr;gap:14px}
+    .cw-row-main{grid-template-columns:32px 1fr 28px;gap:14px}
     .cw-year{display:none}
     .cw-title{font-size:21px}
+    .cw-detail-pad{grid-template-columns:32px 1fr;gap:14px}
+    .cw-md{font-size:16.5px}
   }
 
   /* ---- footer / contact ---- */
@@ -423,7 +570,7 @@
   html[data-theme="dark"] .twk-lbl,html[data-theme="dark"] .twk-val{color:var(--ink-2)}
 
   /* ─────────────────────────────────────────────
-     Featured Notes — home page blog teaser
+     Featured Notes - home page blog teaser
      ───────────────────────────────────────────── */
   .featured{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:0;margin-top:0}
   .featured > .fn{
@@ -461,7 +608,7 @@
   .featured .fn.lead .glyph::before{left:16px;top:16px;width:42%;height:60%;background:var(--paper);border-radius:3px}
   .featured .fn.lead .glyph::after{right:16px;bottom:16px;width:36%;height:50%;background:var(--ink);opacity:.85;border-radius:3px}
 
-  /* Optional cover image — replaces glyph (lead) or sits on top (small) */
+  /* Optional cover image - replaces glyph (lead) or sits on top (small) */
   .featured .fn .cover{
     border-radius:4px;overflow:hidden;border:.5px solid var(--rule);
     background:var(--paper-2);
@@ -472,7 +619,7 @@
   .featured .fn:hover .cover img{transform:scale(1.02);transition:transform .8s ease}
 
   /* ─────────────────────────────────────────────
-     Mobile responsiveness — nav, hero, cases, clients, featured, footer
+     Mobile responsiveness - nav, hero, cases, clients, featured, footer
      ───────────────────────────────────────────── */
   @media (max-width:900px){
     .nav{grid-template-columns:auto auto;row-gap:14px;column-gap:16px}
@@ -507,6 +654,7 @@
     .case .detail-pad .meta{grid-column:1 / -1;grid-template-columns:1fr 1fr;font-size:12.5px}
     .case .detail-pad .visual{grid-column:1 / -1;max-height:none}
     .case .detail-pad .visual img{max-height:280px}
+    .case .detail-pad .case-md{grid-column:1 / -1;font-size:16.5px}
 
     .featured{grid-template-columns:1fr}
     .featured > .fn{border-right:0;border-bottom:.5px solid var(--rule);padding:28px 0 !important}
@@ -545,11 +693,13 @@
 <body>
   <div id="root"></div>
 
+  <script src="https://unpkg.com/marked@12.0.2/marked.min.js"></script>
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <script type="text/babel" src="tweaks-panel.jsx?v=2"></script>
   <script src="notes-data.js?v=2"></script>
+  <script src="cases-data.js?v=2"></script>
   <script type="text/babel" src="portfolio.jsx?v=2"></script>
 </body>
 </html>

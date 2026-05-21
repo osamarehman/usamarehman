@@ -1,4 +1,4 @@
-// shared-ui.jsx — Nav, Footer, Colophon, theme hook for notes.html + article.html
+// shared-ui.jsx - Nav, Footer, Colophon, theme hook for notes.html + article.html
 // Home page (index.html) has its own copy of Nav/Footer inline in portfolio.jsx.
 
 const { useEffect, useRef } = React;
@@ -50,7 +50,7 @@ function Nav({ theme, onTheme, current }) {
       </div>
       <div className="center serif">
         <a href="index.html"><i>Usama Rehman</i></a>
-        <span className="sans" style={{fontStyle:"normal",fontSize:13,letterSpacing:".02em",color:"var(--ink-3)",marginLeft:8}}>— Solo platform engineer</span>
+        <span className="sans" style={{fontStyle:"normal",fontSize:13,letterSpacing:".02em",color:"var(--ink-3)",marginLeft:8}}>- Solo platform engineer</span>
       </div>
       <div className="right sans">
         <a href="index.html#work" className={cls('work')}>Work</a>
@@ -84,7 +84,7 @@ function Footer() {
       <div className="col">
         <h4>Engagement</h4>
         <p style={{fontFamily:"Instrument Serif,serif",fontSize:17,lineHeight:1.45,color:"var(--ink-2)",margin:0}}>
-          Most projects start with a paid discovery week — I sit with the system,
+          Most projects start with a paid discovery week - I sit with the system,
           map the workflow, and write a build plan you keep regardless of whether
           we continue. Fixed-price or hourly from there.
         </p>

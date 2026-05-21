@@ -1,4 +1,4 @@
-// portfolio.jsx — Usama Rehman portfolio app
+// portfolio.jsx - Usama Rehman portfolio app
 
 const { useState, useEffect, useMemo, useRef } = React;
 
@@ -10,7 +10,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 // Tiny safe parser: splits a string on <em>...</em> tags and returns JSX nodes.
-// Hardcoded content only — never feed user input through this.
+// Hardcoded content only - never feed user input through this.
 function renderEm(text) {
   const parts = String(text).split(/(<em>.*?<\/em>)/g);
   return parts.map((p, i) => {
@@ -19,162 +19,14 @@ function renderEm(text) {
   });
 }
 
-const CASES = [
-  {
-    id: "shipdeck",
-    idx: "01",
-    title: "An AI-native <em>operations cockpit</em> I built so I never had to glue together six SaaS tools again",
-    client: "ShipDeck",
-    clientNote: "Self-built, in daily production",
-    industry: "Operations",
-    stack: ["FastAPI · async", "React 19 · TanStack", "Postgres + pgvector"],
-    impact: { value: "70+", label: "FastAPI routers · 1 engineer" },
-    year: "2026",
-    duration: "Ongoing",
-    role: "Sole engineer, design + build + operate",
-    lead: "I needed an operations cockpit that could run AI agents in real terminals, orchestrate skills across projects, and survive without a single SaaS subscription. Built it. Use it daily. Multi-tenant for whoever else wants in.",
-    bullets: [
-      "70+ FastAPI routers, 60+ services, 60+ Postgres tables",
-      "20+ specialized AI agents orchestrated via swarm IPC",
-      "Multi-pane web terminals with dtach + tmux persistence and shareable spectator links",
-      "Single VPS deploy behind Caddy + Better Auth, daily encrypted snapshots",
-    ],
-  },
-  {
-    id: "fitiq",
-    idx: "02",
-    title: "Multi-tenant gym SaaS with <em>paying gyms</em> running on it in production",
-    client: "FitIQ",
-    clientNote: "fitiq.com.au · live with paying customers",
-    industry: "SaaS",
-    stack: ["FastAPI + Celery", "Flutter · iOS + Android", "Caddy per-tenant TLS"],
-    impact: { value: "180+", label: "features · 3 subscription tiers" },
-    year: "2024–2026",
-    duration: "18 months, ongoing",
-    role: "Sole engineer — backend, web, mobile, infra",
-    lead: "A multi-tenant gym SaaS that runs Lead → Allocation → Sessions → Reviews end-to-end. FastAPI + Celery on the backend, a Flutter app on both stores, Caddy provisioning per-tenant TLS on demand. Paying gyms in production.",
-    bullets: [
-      "Per-gym branding, custom domains, custom SMTP — full white-label",
-      "Provider-agnostic SMS layer (Twilio + Cellcast) switchable with one config",
-      "Flutter rewrite of an earlier React Native app — shipped to iOS + Android",
-      "Field-level encryption via Fernet — rolled out without a single backfill migration",
-    ],
-  },
-  {
-    id: "transformula",
-    idx: "03",
-    title: "Consolidated <em>three SaaS subscriptions</em> into one self-hosted platform",
-    client: "Transformula (Chasing Better)",
-    clientNote: "app.transformula.com.au · coaching business platform",
-    industry: "SaaS",
-    stack: ["Bun + Express", "React 19 · TanStack", "Prisma 7 + Postgres"],
-    impact: { value: "5", label: "marketing funnels + meal engine" },
-    year: "2025",
-    duration: "12 months",
-    role: "Sole engineer",
-    lead: "A monorepo SaaS that retired the client's Unbounce, GoHighLevel, and Typeform subscriptions. Five distinct marketing funnels, a deterministic meal-plan generation engine, multi-tenant trainer portal, server-side Meta CAPI tracking.",
-    bullets: [
-      "Deterministic meal-plan pipeline: intake → BMR/macros → recipe match → React-PDF → Resend",
-      "Five themed marketing funnels with shared attribution + Resend webhook ingest",
-      "Trainerize + Google Sheets/Drive integration as best-effort secondary stores",
-      "78 endpoints, 70 frontend routes, ~66K LOC TypeScript",
-    ],
-  },
-  {
-    id: "capitol",
-    idx: "04",
-    title: "A roofing contractor's <em>entire operations stack</em> on a single VPS",
-    client: "Capitol Improvements",
-    clientNote: "improveitmd.com · production roofing business",
-    industry: "Operations",
-    stack: ["Caddy + Authelia SSO", "Strapi 5 + n8n", "Flask + React + Postgres"],
-    impact: { value: "8", label: "containers · 5 systemd services · 1 VPS" },
-    year: "2024–2026",
-    duration: "14 months, ongoing",
-    role: "Sole engineer + operator",
-    lead: "Eight Docker containers and five systemd services behind one Caddy + Authelia SSO, all on a single ARM64 VPS. Strapi CMS with 900+ content items, a custom Flask + React CRM, n8n lead intake from Google Local Services and Yelp, encrypted nightly backups to a Google Shared Drive.",
-    bullets: [
-      "Custom 3-tier backup: daily DB dump + full encrypted environment snapshot + incremental media sync",
-      "Authelia SSO with dual-auth fallback — rollback is removing one Caddyfile block",
-      "GitHub Actions for Strapi, webhook deploys for the website builder, manual for Flask apps",
-      "Flask CRM: 26 blueprints, 51 models, Anthropic Claude for assistant + measurement extraction",
-    ],
-  },
-];
+// CASES is provided by cases-data.js (window.CASES)
+const CASES = (typeof window !== "undefined" && window.CASES) || [];
 
-// Client engagements — delivered under NDA via an agency partner.
-// Described at a general level (sector + system + stack), no client names or
-// proprietary project names, per the confidentiality terms of each contract.
-const CLIENT_WORK = [
-  {
-    idx: "05",
-    title: "Hotel operations intelligence portal",
-    sector: "Hospitality · multi-property hotel group",
-    blurb: "Real-time property KPI cockpit — occupancy, RevPAR, labor, market share — with a 16-alert engine, a 60-second GM daily confirmation flow, vendor data integrations (PMS, market feed, payroll), and n8n notification workflows. Config-driven multi-property: adding a property is an insert, not a rebuild.",
-    stack: ["Next.js 16", "Supabase · Postgres RLS", "Vercel", "n8n"],
-    year: "2026",
-  },
-  {
-    idx: "06",
-    title: "AI deal-origination engine",
-    sector: "Private equity · M&A advisory",
-    blurb: "Automated acquisition-sourcing pipeline: parallel search across multiple data vendors, a dedup engine (domain match + fuzzy name), Claude-scored fit ratings with written rationale per target, contact enrichment for qualified targets, and a client-ready Excel export.",
-    stack: ["Node.js", "Claude API", "n8n", "Supabase"],
-    year: "2026",
-  },
-  {
-    idx: "07",
-    title: "AI sales agent & outreach pipeline",
-    sector: "Residential solar",
-    blurb: "A live AI conversation agent that qualifies, educates, prices (territory-aware via a solar design API), and hands off to the sales team — wired end-to-end from cold outreach through reply detection into the agent, with infrastructure hardening and silent-failure cleanup.",
-    stack: ["n8n", "OpenAI", "Airtable", "Instantly · Clay"],
-    year: "2026",
-  },
-  {
-    idx: "08",
-    title: "Smart production scheduling system",
-    sector: "Sign & graphics manufacturing",
-    blurb: "AI proof-PDF extraction, a production-time calculator across 8+ operation types built from the client's own rate cards, and a capacity-aware scheduling engine — all migrated from custom TypeScript into maintainable n8n workflows, with operational dashboards.",
-    stack: ["n8n", "Google Gemini", "Monday.com", "TypeScript"],
-    year: "2026",
-  },
-  {
-    idx: "09",
-    title: "Order, freight & operations automation",
-    sector: "Marine equipment distributor",
-    blurb: "Layered, fault-isolated automation: PO intake (PDF OCR + EDI feeds) against a self-learning SKU/unit mapping store, automated ERP order creation with conflict-safe numbering, two-stage freight booking, and tracking loopback into one-click invoicing.",
-    stack: ["n8n", "OCR", "Fishbowl ERP", "FreightView · C.H. Robinson"],
-    year: "2026",
-  },
-  {
-    idx: "10",
-    title: "Automated property intelligence system",
-    sector: "Real estate lead intelligence",
-    blurb: "Monitors 28 municipal planning, zoning, and review boards across 7 ZIP codes; extracts property signals and contacts from meeting documents with AI; scores and tiers leads deterministically; and ships structured weekly and monthly data packages.",
-    stack: ["n8n", "OpenAI", "Airtable", "Apify · Regrid"],
-    year: "2026",
-  },
-  {
-    idx: "11",
-    title: "Sales backend automation — 3 modules",
-    sector: "Sales consultancy",
-    blurb: "An AI diagnostic-email engine, a conditional sales-script + one-page \"battle map\" PDF generator, and a Stream Deck webhook \"kill switch\" for instant contract delivery mid-call — each output mobile-responsive and delivered transactionally.",
-    stack: ["Make.com", "Airtable", "Gemini · GPT", "Postmark · PDFMonkey"],
-    year: "2026",
-  },
-  {
-    idx: "12",
-    title: "Personality assessment → PDF report engine",
-    sector: "Coaching · assessment",
-    blurb: "A 50-question Typeform feeding a scoring and classification engine (personality type, risk/reward composites, driver) that resolves conditional logic and renders a dynamic, personalized PDF report delivered to each respondent.",
-    stack: ["Typeform", "n8n", "PDF generation"],
-    year: "2026",
-  },
-];
 
-const INDUSTRIES = ["All", "Operations", "SaaS"];
 
-// Scroll-triggered reveal — IntersectionObserver, batches sequential reveals.
+const INDUSTRIES = ["All", "Operations", "SaaS", "AI"];
+
+// Scroll-triggered reveal - IntersectionObserver, batches sequential reveals.
 // Watches via MutationObserver so newly-added .rv elements (filter changes,
 // expanded details, etc.) get observed too. Uses a data attribute instead of a
 // class so React's className reconciliation can't wipe it on re-render.
@@ -220,7 +72,7 @@ function useReveal() {
   return ref;
 }
 
-// Counter — animates from 0 to `to` once it enters viewport.
+// Counter - animates from 0 to `to` once it enters viewport.
 function Counter({ to, prefix = "", suffix = "", duration = 1400 }) {
   const [val, setVal] = useState(0);
   const elRef = useRef(null);
@@ -263,10 +115,9 @@ function Nav({ theme, onTheme }) {
         <span style={{color:"var(--ink-4)"}}>·</span>
         <span>Hyderabad, PK · GMT+5</span>
       </div>
-      <div className="center serif"><i>Usama Rehman</i> &nbsp;—&nbsp; <span className="sans" style={{fontStyle:"normal",fontSize:13,letterSpacing:".02em",color:"var(--ink-3)"}}>Solo platform engineer</span></div>
+      <div className="center serif"><i>Usama Rehman</i> &nbsp;-&nbsp; <span className="sans" style={{fontStyle:"normal",fontSize:13,letterSpacing:".02em",color:"var(--ink-3)"}}>Solo platform engineer</span></div>
       <div className="right sans">
         <a href="#work">Work</a>
-        <a href="#client-work">Clients</a>
         <a href="notes.html">Notes</a>
         <a href="#contact">Contact</a>
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
@@ -281,9 +132,40 @@ function Nav({ theme, onTheme }) {
 }
 
 function Hero() {
+  const portraitRef = useRef(null);
+  useEffect(() => {
+    const fig = portraitRef.current;
+    if (!fig) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = null;
+    const onMove = (e) => {
+      const r = fig.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      const tx = (0.5 - y) * 9;   // rotateX (max ±4.5deg)
+      const ty = (x - 0.5) * 11;  // rotateY (max ±5.5deg)
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        fig.style.setProperty('--tilt-x', tx.toFixed(2) + 'deg');
+        fig.style.setProperty('--tilt-y', ty.toFixed(2) + 'deg');
+        fig.style.setProperty('--glare-x', (x * 100).toFixed(1) + '%');
+        fig.style.setProperty('--glare-y', (y * 100).toFixed(1) + '%');
+      });
+    };
+    const onLeave = () => {
+      fig.style.setProperty('--tilt-x', '0deg');
+      fig.style.setProperty('--tilt-y', '0deg');
+    };
+    fig.addEventListener('mousemove', onMove);
+    fig.addEventListener('mouseleave', onLeave);
+    return () => {
+      fig.removeEventListener('mousemove', onMove);
+      fig.removeEventListener('mouseleave', onLeave);
+    };
+  }, []);
   return (
     <section className="hero">
-      <figure className="portrait rv">
+      <figure className="portrait rv" ref={portraitRef}>
         <img src="profile.png" alt="Usama Rehman" width="300" height="380" loading="eager" />
         <figcaption className="mono">Usama Rehman<span>Hyderabad · PK</span></figcaption>
       </figure>
@@ -302,10 +184,10 @@ function Hero() {
         <div className="col rv">
           <div className="k mono">Practice</div>
           <p>
-            Backend, frontend, mobile, infra — all of it, end to end. I take on the
+            Backend, frontend, mobile, infra - all of it, end to end. I take on the
             full build of production platforms most teams would spread across four
             people. Five platforms I own and operate, plus eight documented client
-            systems shipped — AI agents, automation pipelines, and the integrations
+            systems shipped - AI agents, automation pipelines, and the integrations
             nobody else could get to talk.
           </p>
         </div>
@@ -322,7 +204,7 @@ function Hero() {
             Top Rated Plus on Upwork with a 5-year track record and two multi-year
             anchor clients. Open to multi-month engagements where the build needs
             an owner-operator, not a contractor. Always happy to talk through a
-            messy AI pilot — even if we don't end up working together.
+            messy AI pilot - even if we don't end up working together.
           </p>
         </div>
       </div>
@@ -364,57 +246,87 @@ function Filters({ active, setActive, counts, visible }) {
 }
 
 function CaseRow({ c, open, onToggle }) {
+  const expandable = !!(c.lead || (c.bullets && c.bullets.length) || c.image || c.detailsMd);
   return (
-    <article className={"case rv" + (open ? " open" : "")} onClick={onToggle}>
+    <article
+      className={"case rv" + (open ? " open" : "") + (expandable ? " expandable" : "")}
+      onClick={expandable ? onToggle : undefined}
+    >
       <div className="row">
         <div className="idx mono">{c.idx}</div>
         <div className="title serif">{renderEm(c.title)}</div>
         <div className="client sans">
           {c.client}
-          <small>{c.clientNote}</small>
+          {c.clientNote && <small>{c.clientNote}</small>}
         </div>
         <div className="tag mono">{c.industry}</div>
-        <div className="impact serif"><b>{c.impact.value}</b> {c.impact.label}</div>
-        <div className="arrow">
+        <div className="impact serif">
+          {c.impact
+            ? <span><b>{c.impact.value}</b> {c.impact.label}</span>
+            : <span className="impact-year mono">{c.year}</span>}
+        </div>
+        <div className="arrow" style={{ visibility: expandable ? 'visible' : 'hidden' }}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
         </div>
       </div>
-      <div className="detail">
-        <div className="detail-inner">
-          <div className="detail-pad">
-            <div className="lead">
-              {c.lead}
+      {expandable && (
+        <div className="detail">
+          <div className="detail-inner">
+            <div className="detail-pad">
+              {c.lead && <div className="lead">{c.lead}</div>}
+              <div className="meta">
+                {c.role && (
+                  <div>
+                    <div className="k">Role</div>
+                    <div>{c.role}</div>
+                  </div>
+                )}
+                {(c.year || c.duration) && (
+                  <div>
+                    <div className="k">{c.duration ? "Year \u00b7 Duration" : "Year"}</div>
+                    <div>{c.duration ? `${c.year} \u00b7 ${c.duration}` : c.year}</div>
+                  </div>
+                )}
+                {c.stack && c.stack.length > 0 && (
+                  <div>
+                    <div className="k">Stack</div>
+                    <ul>{c.stack.map(s => <li key={s}>{s}</li>)}</ul>
+                  </div>
+                )}
+                {c.bullets && c.bullets.length > 0 && (
+                  <div>
+                    <div className="k">What shipped</div>
+                    <ul>{c.bullets.map(b => <li key={b}>{b}</li>)}</ul>
+                  </div>
+                )}
+              </div>
+              {c.detailsMd && window.marked && (
+                <div
+                  className="case-md"
+                  dangerouslySetInnerHTML={{ __html: window.marked.parse(c.detailsMd) }}
+                />
+              )}
+              {c.image && (
+                <figure className="visual">
+                  <img src={c.image} alt={c.imageAlt || `${c.client} - ${c.title.replace(/<[^>]+>/g,'')}`} loading="lazy" />
+                  <figcaption>
+                    <span>Fig. {c.idx} · {c.client}</span>
+                    <span>{c.imageAlt || ""}</span>
+                  </figcaption>
+                </figure>
+              )}
+              <a
+                className="case-readmore"
+                href={`project.html?slug=${c.id}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span>Read full case study</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              </a>
             </div>
-            <div className="meta">
-              <div>
-                <div className="k">Role</div>
-                <div>{c.role}</div>
-              </div>
-              <div>
-                <div className="k">Year · Duration</div>
-                <div>{c.year} · {c.duration}</div>
-              </div>
-              <div>
-                <div className="k">Stack</div>
-                <ul>{c.stack.map(s => <li key={s}>{s}</li>)}</ul>
-              </div>
-              <div>
-                <div className="k">What shipped</div>
-                <ul>{c.bullets.map(b => <li key={b}>{b}</li>)}</ul>
-              </div>
-            </div>
-            {c.image && (
-              <figure className="visual">
-                <img src={c.image} alt={c.imageAlt || `${c.client} — ${c.title.replace(/<[^>]+>/g,'')}`} loading="lazy" />
-                <figcaption>
-                  <span>Fig. {c.idx} · {c.client}</span>
-                  <span>{c.imageAlt || ""}</span>
-                </figcaption>
-              </figure>
-            )}
           </div>
         </div>
-      </div>
+      )}
     </article>
   );
 }
@@ -429,28 +341,9 @@ function Cases({ filter }) {
       ))}
       {filtered.length === 0 && (
         <div style={{padding:"48px 4px",fontFamily:"Instrument Serif,serif",fontStyle:"italic",color:"var(--ink-3)",fontSize:20}}>
-          Nothing here in this slice — but I've probably done something close. <a href="#contact" style={{color:"var(--accent)"}}>Ask me.</a>
+          Nothing here in this slice - but I've probably done something close. <a href="#contact" style={{color:"var(--accent)"}}>Ask me.</a>
         </div>
       )}
-    </div>
-  );
-}
-
-function ClientWork() {
-  return (
-    <div className="client-work">
-      {CLIENT_WORK.map(c => (
-        <article className="cw-row rv" key={c.idx}>
-          <div className="cw-idx mono">{c.idx}</div>
-          <div className="cw-body">
-            <div className="cw-title serif">{c.title}</div>
-            <div className="cw-sector sans">{c.sector}</div>
-            <p className="cw-blurb">{c.blurb}</p>
-            <ul className="cw-stack mono">{c.stack.map(s => <li key={s}>{s}</li>)}</ul>
-          </div>
-          <div className="cw-year mono">{c.year}</div>
-        </article>
-      ))}
     </div>
   );
 }
@@ -519,7 +412,7 @@ function Footer() {
       <div className="col">
         <h4>Engagement</h4>
         <p style={{fontFamily:"Instrument Serif,serif",fontSize:17,lineHeight:1.45,color:"var(--ink-2)",margin:0}}>
-          Most projects start with a paid discovery week — I sit with the system,
+          Most projects start with a paid discovery week - I sit with the system,
           map the workflow, and write a build plan you keep regardless of whether
           we continue. Fixed-price or hourly from there.
         </p>
@@ -567,16 +460,12 @@ function App() {
       <Nav theme={t.theme} onTheme={(v) => setTweak('theme', v)} />
       <Hero />
       <div id="work">
-        <SectionHeader num="§ 02" title="Platforms I <em>build &amp; operate</em>" count={`${CASES.length} platforms`} />
+        <SectionHeader num="§ 02" title="Selected <em>work</em>" count={`${CASES.length} engagements`} />
         <Filters active={filter} setActive={setFilter} counts={counts} visible={t.showFilters} />
         <Cases filter={filter} />
       </div>
-      <div id="client-work">
-        <SectionHeader num="§ 03" title="Client <em>engagements</em>" count={`${CLIENT_WORK.length} systems · under NDA`} />
-        <ClientWork />
-      </div>
       <div id="notes">
-        <SectionHeader num="§ 04" title="Featured <em>notes</em>" count={<a href="notes.html" style={{color:"inherit"}}>All notes ↗</a>} />
+        <SectionHeader num="§ 03" title="Featured <em>notes</em>" count={<a href="notes.html" style={{color:"inherit"}}>All notes ↗</a>} />
         <FeaturedNotes />
       </div>
       <Footer />

@@ -1,4 +1,4 @@
-/* portfolio.css — shared design tokens + base + nav + footer
+/* portfolio.css - shared design tokens + base + nav + footer
    Used by every page (home, notes, article) to keep branding consistent. */
 
 :root {
@@ -98,7 +98,7 @@ html[data-theme="dark"] .theme-btn .glyph::after{content:"";position:absolute;in
   .rv[data-revealed="true"]{animation:none}
 }
 
-/* page transitions — fade body on internal nav */
+/* page transitions - fade body on internal nav */
 body{transition:opacity .28s ease, transform .28s ease}
 body.page-out{opacity:0;transform:translateY(-6px)}
 
