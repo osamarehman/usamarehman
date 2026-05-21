@@ -59,6 +59,7 @@ function Nav({ theme, onTheme, current }) {
         <a href="index.html#contact">Contact</a>
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://x.com/usamarehman_dev" target="_blank" rel="noreferrer">X</a>
         <button className="theme-btn" onClick={() => onTheme(theme === 'light' ? 'dark' : 'light')}>
           <span className="glyph"></span>
           <span>{theme === 'light' ? 'Light' : 'Dark'}</span>
@@ -79,6 +80,7 @@ function Footer() {
         <a className="big-link" href="mailto:osamarehmanmughal@gmail.com">osamarehmanmughal@gmail.com</a>
         <a className="big-link" href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">upwork.com/freelancers/usamamughal95</a>
         <a className="big-link" href="https://github.com/osamarehman" target="_blank" rel="noreferrer">github.com/osamarehman</a>
+        <a className="big-link" href="https://x.com/usamarehman_dev" target="_blank" rel="noreferrer">x.com/usamarehman_dev</a>
         <p className="note">I read every inquiry myself. No intake form, no funnel. Replies within one business day.</p>
       </div>
       <div className="col">
