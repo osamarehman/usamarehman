@@ -37,8 +37,22 @@ body{font-family:"Instrument Serif", "Source Serif 4", Georgia, serif;}
 .sans{font-family:"Instrument Sans", ui-sans-serif, system-ui, sans-serif;}
 .mono{font-family:"JetBrains Mono", ui-monospace, monospace;}
 .serif{font-family:"Instrument Serif", "Source Serif 4", Georgia, serif;}
-a{color:inherit;text-decoration:none}
+a{color:inherit;text-decoration:none;cursor:pointer}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:default}
+
+/* ─── keyboard accessibility: visible focus + clickable affordance ───
+   Rings show only for keyboard users (:focus-visible) so mouse clicks stay clean. */
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+a:focus-visible,button:focus-visible,.chip:focus-visible,.theme-btn:focus-visible{
+  outline:2px solid var(--accent);outline-offset:3px}
+.chip,.theme-btn{cursor:pointer}
+#main:focus{outline:none}
+
+/* skip-to-content: off-screen until focused by keyboard */
+.skip-link{position:absolute;left:8px;top:-48px;z-index:1000;
+  background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;
+  font-size:13px;transition:top .2s ease}
+.skip-link:focus{top:8px;outline:2px solid var(--accent);outline-offset:2px}
 
 .frame{max-width:1560px;margin:0 auto;padding:28px 64px 80px;position:relative}
 .frame.narrow{max-width:1120px;padding:28px 56px 80px}

@@ -26,6 +26,48 @@ const CASES = (typeof window !== "undefined" && window.CASES) || [];
 
 const INDUSTRIES = ["All", "Operations", "SaaS", "AI"];
 
+// Capabilities — grouped by layer. Drawn from what actually ships across the cases.
+const STACK = [
+  { layer: "Backend", items: [
+    { name: "FastAPI", note: "async · 70+ routers" },
+    { name: "Bun + Express", note: "TypeScript monorepos" },
+    { name: "Node · Flask", note: "service APIs, CRMs" },
+    { name: "Celery", note: "background + scheduled work" },
+  ]},
+  { layer: "Frontend & mobile", items: [
+    { name: "React 19 · TanStack", note: "dashboards, portals" },
+    { name: "Next.js 16", note: "server-rendered apps" },
+    { name: "Flutter", note: "shipped to iOS + Android" },
+    { name: "React-PDF · Resend", note: "generated documents" },
+  ]},
+  { layer: "Data & infra", items: [
+    { name: "Postgres · pgvector", note: "the event bus too" },
+    { name: "Prisma · Supabase", note: "schemas, RLS" },
+    { name: "Docker · Caddy", note: "per-tenant TLS" },
+    { name: "Authelia · systemd", note: "SSO, single-VPS ops" },
+  ]},
+  { layer: "AI & automation", items: [
+    { name: "Claude · OpenAI · Gemini", note: "agents, extraction, scoring" },
+    { name: "n8n · Make.com", note: "durable workflows" },
+    { name: "RAG · swarm IPC", note: "orchestrated agent loops" },
+    { name: "OCR · EDI", note: "document + feed intake" },
+  ]},
+];
+
+// How I work — the engagement model, stated plainly.
+const PROCESS = [
+  { n: "01", title: "Discovery", body: "A paid discovery week. I sit with the system, map the workflow, and write a build plan you keep — whether or not we keep working together.", tick: "Week 1 · you keep the plan" },
+  { n: "02", title: "Build", body: "Fixed-price or hourly from there. I take the full build end to end — backend, frontend, mobile, infra — with no handoffs and no coordination tax.", tick: "One owner-operator" },
+  { n: "03", title: "Ship", body: "Production from day one: single-VPS deploys behind Caddy and auth, with encrypted nightly backups. Real users, not a staging demo.", tick: "Live, not staged" },
+  { n: "04", title: "Operate", body: "I stay on to run it. Most engagements turn multi-year because the person who built the system is the person keeping it alive.", tick: "Multi-year by default" },
+];
+
+// Client words. EMPTY by default — paste verbatim Upwork review excerpts here.
+// Nothing renders until this has entries, so no placeholder testimonial ever ships.
+//   { quote: "…", who: "Role / company", meta: "Project · Upwork" }
+const PROOF_QUOTES = [
+];
+
 // Scroll-triggered reveal - IntersectionObserver, batches sequential reveals.
 // Watches via MutationObserver so newly-added .rv elements (filter changes,
 // expanded details, etc.) get observed too. Uses a data attribute instead of a
@@ -84,6 +126,10 @@ function Counter({ to, prefix = "", suffix = "", duration = 1400 }) {
         if (e.isIntersecting && !started.current) {
           started.current = true;
           obs.disconnect();
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setVal(to);
+            return;
+          }
           const start = performance.now();
           const step = (now) => {
             const t = Math.min(1, (now - start) / duration);
@@ -123,7 +169,11 @@ function Nav({ theme, onTheme }) {
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
         <a href="https://x.com/usamarehman_dev" target="_blank" rel="noreferrer">X</a>
-        <button className="theme-btn" onClick={() => onTheme(theme === 'light' ? 'dark' : 'light')}>
+        <button
+          className="theme-btn"
+          onClick={() => onTheme(theme === 'light' ? 'dark' : 'light')}
+          aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+        >
           <span className="glyph"></span>
           <span>{theme === 'light' ? 'Light' : 'Dark'}</span>
         </button>
@@ -165,7 +215,7 @@ function Hero() {
     };
   }, []);
   return (
-    <section className="hero">
+    <section className="hero" id="main" tabIndex={-1}>
       <figure className="portrait rv" ref={portraitRef}>
         <img src="profile.png" alt="Usama Rehman" width="300" height="380" loading="eager" />
         <figcaption className="mono">Usama Rehman<span>Hyderabad · PK</span></figcaption>
@@ -248,10 +298,28 @@ function Filters({ active, setActive, counts, visible }) {
 
 function CaseRow({ c, open, onToggle }) {
   const expandable = !!(c.lead || (c.bullets && c.bullets.length) || c.image || c.detailsMd);
+  const detailId = `case-detail-${c.id}`;
+  // Keyboard parity: the row behaves like a disclosure button. Enter/Space toggle
+  // it (Space gets preventDefault so the page doesn't scroll). Clicks on nested
+  // links/controls already stopPropagation, so they won't trigger a toggle.
+  const onKeyDown = expandable
+    ? (e) => {
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle();
+        }
+      }
+    : undefined;
   return (
     <article
       className={"case rv" + (open ? " open" : "") + (expandable ? " expandable" : "")}
       onClick={expandable ? onToggle : undefined}
+      onKeyDown={onKeyDown}
+      role={expandable ? "button" : undefined}
+      tabIndex={expandable ? 0 : undefined}
+      aria-expanded={expandable ? open : undefined}
+      aria-controls={expandable ? detailId : undefined}
     >
       <div className="row">
         <div className="idx mono">{c.idx}</div>
@@ -271,7 +339,7 @@ function CaseRow({ c, open, onToggle }) {
         </div>
       </div>
       {expandable && (
-        <div className="detail">
+        <div className="detail" id={detailId}>
           <div className="detail-inner">
             <div className="detail-pad">
               {c.lead && <div className="lead">{c.lead}</div>}
@@ -397,6 +465,81 @@ function FeaturedNotes() {
   );
 }
 
+function Capabilities() {
+  return (
+    <div className="stack-grid rv">
+      {STACK.map((col, i) => (
+        <div className="stack-col" key={col.layer}>
+          <div className="layer"><span className="ix">{String(i + 1).padStart(2, "0")}</span>{col.layer}</div>
+          <ul>
+            {col.items.map(it => (
+              <li key={it.name}>
+                {it.name}
+                {it.note && <small>{it.note}</small>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Process() {
+  return (
+    <div className="process rv">
+      {PROCESS.map(s => (
+        <div className="step" key={s.n}>
+          <div className="num serif">{s.n}</div>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+          <div className="tick">{s.tick}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Proof() {
+  return (
+    <div className="rv">
+      <div className="proof-stats">
+        <div className="ps"><b><Counter to={200} prefix="$" suffix="K+" /></b><span>earned on Upwork<br/>across 47 contracts</span></div>
+        <div className="ps"><b><Counter to={100} suffix="%" /></b><span>Job Success Score<br/>maintained</span></div>
+        <div className="ps"><b><Counter to={5} suffix="+" /></b><span>years Top Rated Plus<br/>two multi-year anchors</span></div>
+        <div className="ps"><b><Counter to={13} /></b><span>platforms + client<br/>systems documented</span></div>
+      </div>
+      {PROOF_QUOTES.length > 0 && (
+        <div className="quotes">
+          {PROOF_QUOTES.map((q, i) => (
+            <figure className="quote-card" key={i}>
+              <blockquote>{q.quote}</blockquote>
+              <figcaption className="who"><b>{q.who}</b>{q.meta ? ` · ${q.meta}` : ""}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Now() {
+  return (
+    <section className="now rv" aria-label="Current availability">
+      <div className="label"><span className="dot"></span>Now · MMXXVI</div>
+      <p>
+        Operating <em>ShipDeck</em>, <em>FitIQ</em>, and a roofing contractor's full stack in
+        daily production while shipping client AI systems. Open to one or two multi-month
+        engagements that need an owner-operator.
+      </p>
+      <a className="cta sans" href="#contact">
+        Start a conversation
+        <svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+      </a>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="foot rv" id="contact">
@@ -459,6 +602,7 @@ function App() {
 
   return (
     <div className="frame" ref={ref}>
+      <a className="skip-link sans" href="#main">Skip to content</a>
       <Nav theme={t.theme} onTheme={(v) => setTweak('theme', v)} />
       <Hero />
       <div id="work">
@@ -466,10 +610,23 @@ function App() {
         <Filters active={filter} setActive={setFilter} counts={counts} visible={t.showFilters} />
         <Cases filter={filter} />
       </div>
+      <div id="stack">
+        <SectionHeader num="§ 03" title="What I <em>operate</em>" count="backend → infra" />
+        <Capabilities />
+      </div>
+      <div id="process">
+        <SectionHeader num="§ 04" title="How I <em>work</em>" count="discovery → operate" />
+        <Process />
+      </div>
+      <div id="proof">
+        <SectionHeader num="§ 05" title="The <em>record</em>" count="Top Rated Plus · Upwork" />
+        <Proof />
+      </div>
       <div id="notes">
-        <SectionHeader num="§ 03" title="Featured <em>notes</em>" count={<a href="notes.html" style={{color:"inherit"}}>All notes ↗</a>} />
+        <SectionHeader num="§ 06" title="Featured <em>notes</em>" count={<a href="notes.html" style={{color:"inherit"}}>All notes ↗</a>} />
         <FeaturedNotes />
       </div>
+      <Now />
       <Footer />
       <Colophon />
 

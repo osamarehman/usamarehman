@@ -163,9 +163,10 @@ function ArticleApp() {
 
   return (
     <div className="frame" ref={ref}>
+      <a className="skip-link sans" href="#main">Skip to content</a>
       <Nav theme={t.theme} onTheme={t.setTheme} current="notes" />
 
-      <header className="article-head">
+      <header className="article-head" id="main" tabIndex={-1}>
         <div className="crumbs rv">
           <a href="index.html">Home</a>
           <span className="sep">/</span>

@@ -153,8 +153,24 @@
   .mono{font-family:"JetBrains Mono", ui-monospace, monospace;}
   .serif{font-family:"Instrument Serif", "Source Serif 4", Georgia, serif;}
 
-  a{color:inherit;text-decoration:none}
+  a{color:inherit;text-decoration:none;cursor:pointer}
   button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:default}
+
+  /* ---- keyboard accessibility: visible focus + clickable affordance ----
+     Rings show only for keyboard users (:focus-visible) so mouse clicks stay clean. */
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+  a:focus-visible,button:focus-visible,.chip:focus-visible,.theme-btn:focus-visible,
+  .case.expandable:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .case.expandable:focus-visible{outline-offset:-2px}
+  .chip,.theme-btn{cursor:pointer}
+  .case.expandable .row{cursor:pointer}
+  #main:focus{outline:none}
+
+  /* skip-to-content: off-screen until focused by keyboard */
+  .skip-link{position:absolute;left:8px;top:-48px;z-index:1000;
+    background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;
+    font-size:13px;transition:top .2s ease}
+  .skip-link:focus{top:8px;outline:2px solid var(--accent);outline-offset:2px}
 
   /* page frame */
   .frame{
@@ -285,6 +301,8 @@
   @media (prefers-reduced-motion: reduce){
     .rv{ opacity:1; transform:none; filter:none; }
     .rv[data-revealed="true"]{ animation:none }
+    .hero h1 .strike::after{ animation:none; transform:scaleX(1) }
+    .nav .left .dot{ animation:none }
   }
 
   /* word-by-word hero spans */
@@ -565,6 +583,69 @@
   .colophon .dots i{width:6px;height:6px;border-radius:50%;background:var(--ink-4)}
   .colophon .dots i:first-child{background:var(--accent)}
 
+  /* ─────────────────────────────────────────────
+     Capabilities / stack — editorial index by layer
+     ───────────────────────────────────────────── */
+  .stack-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:.5px solid var(--rule);margin-top:0}
+  .stack-col{padding:28px 24px 30px;border-right:.5px solid var(--rule);border-bottom:.5px solid var(--rule)}
+  .stack-col:last-child{border-right:0}
+  .stack-col .layer{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .stack-col .layer .ix{color:var(--accent)}
+  .stack-col ul{list-style:none;margin:0;padding:0}
+  .stack-col li{font-family:"Instrument Serif",serif;font-size:20px;line-height:1.2;color:var(--ink);padding:9px 0;border-bottom:.5px dashed var(--rule-soft)}
+  .stack-col li:last-child{border-bottom:0}
+  .stack-col li small{display:block;font-family:"Instrument Sans",sans-serif;font-size:11.5px;color:var(--ink-3);margin-top:3px;letter-spacing:0}
+  @media (max-width:900px){.stack-grid{grid-template-columns:1fr 1fr}.stack-col:nth-child(2n){border-right:0}}
+  @media (max-width:560px){.stack-grid{grid-template-columns:1fr}.stack-col{border-right:0}}
+
+  /* ─────────────────────────────────────────────
+     Process — numbered editorial steps
+     ───────────────────────────────────────────── */
+  .process{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:42px 0 0}
+  .step{display:flex;flex-direction:column;gap:12px}
+  .step .num{font-family:"Instrument Serif",serif;font-size:54px;line-height:.9;color:var(--accent);letter-spacing:-.02em}
+  .step h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:24px;line-height:1.08;letter-spacing:-.015em;margin:0;color:var(--ink)}
+  .step p{font-family:"Instrument Sans",sans-serif;font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:0}
+  .step .tick{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:auto;padding-top:14px;border-top:.5px dashed var(--rule-soft)}
+  @media (max-width:900px){.process{grid-template-columns:1fr 1fr;gap:32px 28px}}
+  @media (max-width:560px){.process{grid-template-columns:1fr}}
+
+  /* ─────────────────────────────────────────────
+     Proof — stats + (optional) client words
+     ───────────────────────────────────────────── */
+  .proof-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:.5px solid var(--rule);border-bottom:.5px solid var(--rule)}
+  .proof-stats .ps{padding:30px 24px;border-right:.5px solid var(--rule)}
+  .proof-stats .ps:last-child{border-right:0}
+  .proof-stats .ps b{display:block;font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(40px,5vw,60px);line-height:1;letter-spacing:-.025em;color:var(--ink)}
+  .proof-stats .ps span{display:block;font-family:"Instrument Sans",sans-serif;font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.4}
+  .quotes{display:grid;grid-template-columns:1fr 1fr}
+  .quote-card{padding:34px 32px;border-right:.5px solid var(--rule);border-bottom:.5px solid var(--rule)}
+  .quote-card:nth-child(2n){border-right:0}
+  .quote-card blockquote{font-family:"Instrument Serif",serif;font-size:23px;line-height:1.4;color:var(--ink);margin:0;font-style:italic}
+  .quote-card blockquote::before{content:"\201C";color:var(--accent);margin-right:2px}
+  .quote-card .who{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:20px}
+  .quote-card .who b{color:var(--ink-2);font-weight:500}
+  @media (max-width:760px){
+    .proof-stats{grid-template-columns:1fr 1fr}
+    .proof-stats .ps:nth-child(2n){border-right:0}
+    .proof-stats .ps:nth-child(-n+2){border-bottom:.5px solid var(--rule)}
+    .quotes{grid-template-columns:1fr}.quote-card{border-right:0}
+  }
+
+  /* ─────────────────────────────────────────────
+     Now — availability strip
+     ───────────────────────────────────────────── */
+  .now{display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center;
+    margin-top:96px;padding:24px 28px;border:.5px solid var(--rule);border-radius:10px;background:var(--paper-2)}
+  .now .label{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .now .label .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in oklab,var(--accent) 22%,transparent);animation:pulse 2.6s ease-in-out infinite}
+  .now p{font-family:"Instrument Serif",serif;font-size:21px;line-height:1.35;color:var(--ink);margin:0;max-width:62ch}
+  .now p em{font-style:italic;color:var(--accent)}
+  .now .cta{font-family:"Instrument Sans",sans-serif;font-size:13px;color:var(--ink);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;border-bottom:.5px solid var(--accent);padding-bottom:3px;transition:gap .3s ease}
+  .now .cta:hover{gap:12px}
+  @media (max-width:760px){.now{grid-template-columns:1fr;gap:16px;padding:22px}}
+  @media (prefers-reduced-motion:reduce){.now .label .dot{animation:none}}
+
   /* tweaks panel override (warmer) */
   html[data-theme="dark"] .twk-panel{background:rgba(28,26,20,.78);color:var(--ink);border-color:rgba(255,255,255,.08)}
   html[data-theme="dark"] .twk-hd b,html[data-theme="dark"] .twk-x{color:var(--ink)}
@@ -698,9 +779,9 @@
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script type="text/babel" src="tweaks-panel.jsx?v=2"></script>
-  <script src="notes-data.js?v=2"></script>
-  <script src="cases-data.js?v=2"></script>
-  <script type="text/babel" src="portfolio.jsx?v=2"></script>
+  <script type="text/babel" src="tweaks-panel.jsx?v=3"></script>
+  <script src="notes-data.js?v=3"></script>
+  <script src="cases-data.js?v=3"></script>
+  <script type="text/babel" src="portfolio.jsx?v=3"></script>
 </body>
 </html>

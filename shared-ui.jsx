@@ -60,7 +60,11 @@ function Nav({ theme, onTheme, current }) {
         <a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">Upwork</a>
         <a href="https://github.com/osamarehman" target="_blank" rel="noreferrer">GitHub</a>
         <a href="https://x.com/usamarehman_dev" target="_blank" rel="noreferrer">X</a>
-        <button className="theme-btn" onClick={() => onTheme(theme === 'light' ? 'dark' : 'light')}>
+        <button
+          className="theme-btn"
+          onClick={() => onTheme(theme === 'light' ? 'dark' : 'light')}
+          aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+        >
           <span className="glyph"></span>
           <span>{theme === 'light' ? 'Light' : 'Dark'}</span>
         </button>

@@ -62,9 +62,10 @@ function NotesApp() {
 
   return (
     <div className="frame" ref={ref}>
+      <a className="skip-link sans" href="#main">Skip to content</a>
       <Nav theme={t.theme} onTheme={t.setTheme} current="notes" />
 
-      <section className="notes-hero">
+      <section className="notes-hero" id="main" tabIndex={-1}>
         <div className="lhs">
           <div className="eyebrow rv"><span className="bar"></span>Notes · MMXXVI</div>
           <h1 className="rv">Field notes from <em>shipping</em> production AI platforms solo.</h1>
