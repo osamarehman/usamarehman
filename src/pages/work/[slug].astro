@@ -2,7 +2,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import GenerativeVisual from '../../components/GenerativeVisual.astro';
+import ServiceArtwork from '../../components/ServiceArtwork.astro';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Expand } from '../../components/Icons';
 
 export async function getStaticPaths() {
@@ -45,11 +45,11 @@ const next = allWork[(currentIndex + 1) % allWork.length];
 
     <div class="case-cover shell" data-reveal>
       {data.cover ? (
-        <figure data-tilt>
+        <figure data-spotlight>
           <Image src={data.cover} alt={data.coverAlt || ''} widths={[840, 1280, 1800, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
           <figcaption><span>{data.coverCaption}</span><span>Fig. {String(data.order).padStart(2, '0')}</span></figcaption>
         </figure>
-      ) : <GenerativeVisual kind={data.kind} label={data.client} />}
+      ) : <div class="case-blueprint"><ServiceArtwork art={data.kind === 'migration' ? 'migration' : data.kind === 'pipeline' ? 'workflow' : data.kind === 'configurator' ? 'phone' : data.kind === 'portal' ? 'portal' : data.kind === 'product' ? 'crm' : 'sheet'} /></div>}
     </div>
 
     {data.metrics.length > 0 && (
@@ -74,7 +74,7 @@ const next = allWork[(currentIndex + 1) % allWork.length];
     </div>
 
     {data.gallery.length > 0 && (
-      <section class="case-gallery shell" aria-labelledby="gallery-title" data-gallery>
+      <section class="case-gallery shell" id="gallery" aria-labelledby="gallery-title" data-gallery>
         <div class="case-gallery-heading" data-reveal><p class="mono-label">04 // project views</p><h2 id="gallery-title">Inside the system.</h2><p>Select any image to inspect it. Use the arrow keys to move through the gallery.</p></div>
         <div class="gallery-grid" data-reveal>
           {data.gallery.map((item, index) => (

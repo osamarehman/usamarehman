@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import IntroPreloader from '../components/IntroPreloader.astro';
 import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import WorkShowcase from '../components/react/WorkShowcase';
@@ -13,37 +15,46 @@ import { ArrowUpRight } from '../components/Icons';
 import type { WorkItem } from '../components/react/work-types';
 
 const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
-const featured: WorkItem[] = work.filter((entry) => entry.data.featured).map((entry) => ({
-  id: entry.id,
-  client: entry.data.client,
-  title: entry.data.title,
-  headlineMetric: entry.data.headlineMetric,
-  subtitle: entry.data.subtitle,
-  type: entry.data.type,
-  stack: entry.data.stack,
-  summary: entry.data.summary,
-  category: entry.data.category,
-  status: entry.data.status,
-  kind: entry.data.kind,
-  cover: entry.data.cover ? {
-    src: entry.data.cover.src,
-    width: entry.data.cover.width,
-    height: entry.data.cover.height,
-  } : undefined,
-  coverAlt: entry.data.coverAlt,
-  coverCaption: entry.data.coverCaption,
-  metrics: entry.data.metrics,
+const featured: WorkItem[] = await Promise.all(work.filter((entry) => entry.data.featured && entry.data.cover).map(async (entry) => {
+  const source = entry.data.cover!;
+  const cover = await getImage({ src: source, width: 1800, format: 'webp', quality: 90 });
+  return {
+    id: entry.id,
+    client: entry.data.client,
+    title: entry.data.title,
+    headlineMetric: entry.data.headlineMetric,
+    subtitle: entry.data.subtitle,
+    type: entry.data.type,
+    stack: entry.data.stack,
+    summary: entry.data.summary,
+    category: entry.data.category,
+    status: entry.data.status,
+    kind: entry.data.kind,
+    cover: {
+      src: cover.src,
+      width: 1800,
+      height: Math.round((source.height / source.width) * 1800),
+    },
+    coverAlt: entry.data.coverAlt,
+    coverCaption: entry.data.coverCaption,
+    metrics: entry.data.metrics,
+  };
 }));
-const secondary = work.filter((entry) => !entry.data.featured);
+const secondary = work.filter((entry) => !entry.data.featured || !entry.data.cover);
 const runova = work.find((entry) => entry.id === 'runova-crm');
 ---
 
 <BaseLayout>
+  <IntroPreloader />
   <Hero />
 
   <section class="section shell work-section" id="work" aria-labelledby="work-title">
-    <SectionHeading id="work-title" index="01" label="selected work" title="Real systems." accent="Measured results." description="A closer look at the workflows, architecture and production results, with real product screenshots." />
-    <WorkShowcase items={featured} client:visible />
+    <div class="work-scroll-track" data-work-track>
+      <div class="work-sticky">
+        <SectionHeading id="work-title" index="01" label="selected work" title="Real systems." accent="Measured results." description="A closer look at the workflows, architecture and production results, with real product screenshots." />
+        <WorkShowcase items={featured} client:visible />
+      </div>
+    </div>
     <div class="more-work" data-reveal>
       <p class="mono-label">More selected builds</p>
       {secondary.map((entry) => (

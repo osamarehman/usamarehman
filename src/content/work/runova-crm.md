@@ -19,12 +19,15 @@ metrics:
   - { label: Pipelines, value: Lead, sales, sold and production }
   - { label: Product status, value: In active development }
 cover: ../../assets/work/runova/01-dashboard.png
-coverAlt: Runova CRM dashboard with sales pipelines and AI Coworker
+coverAlt: Runova CRM dashboard with sales pipelines, active jobs, and financial summary
 coverCaption: Runova CRM, my own product · Demo data
 gallery:
   - image: ../../assets/work/runova/01-dashboard.png
-    alt: Runova dashboard with lead and sales pipelines and Coworker chat
-    caption: Dashboard and AI Coworker · Demo data
+    alt: Runova dashboard with sales pipelines, active jobs, and financial summary
+    caption: Dashboard and sales pipelines · Demo data
+  - image: ../../assets/work/runova/02-jobs-board.png
+    alt: Runova CRM lead pipeline job board with job values and stage totals
+    caption: Lead pipeline job board · Demo data
   - image: ../../assets/work/runova/03-job-overview.png
     alt: Job overview with workflow stage cards and customer details
     caption: Job overview · Demo data

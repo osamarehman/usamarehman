@@ -1,0 +1,30 @@
+---
+import { createMosaic, createProjector, fitMosaic, MOSAIC_ROTATION, perspective, shadeMosaic } from './react/mosaic-model';
+
+const mesh = createMosaic(72, 9);
+const project = createProjector(MOSAIC_ROTATION);
+const layout = fitMosaic(mesh.points, MOSAIC_ROTATION, 640, 600);
+const points = mesh.points.map((point) => {
+  const [x, y, z] = project(point);
+  const depth = perspective(z);
+  return { x: layout.centerX + x * layout.scale * depth, y: layout.centerY + y * layout.scale * depth, z };
+});
+const tiles = mesh.tiles.map((tile) => ({
+  ...tile,
+  depth: tile.corners.reduce((sum, index) => sum + points[index].z, 0) / 4,
+})).sort((a, b) => a.depth - b.depth);
+---
+
+<svg viewBox="0 0 640 600" fill="none">
+  {tiles.map((tile) => {
+    const shade = shadeMosaic(project(tile.normal), tile.depth);
+    return <polygon
+      points={tile.corners.map((index) => `${points[index].x.toFixed(2)},${points[index].y.toFixed(2)}`).join(' ')}
+      fill={tile.u < 2 ? '#ff5a1f' : `rgb(${shade}, ${shade}, ${shade})`}
+      fill-opacity="0.9"
+      stroke="var(--canvas)"
+      stroke-opacity="0.65"
+      stroke-width="0.55"
+    />;
+  })}
+</svg>

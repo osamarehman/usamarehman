@@ -1,0 +1,67 @@
+<div class="intro-preloader" data-intro role="dialog" aria-modal="true" aria-label="Portfolio introduction" tabindex="-1" hidden>
+  <div class="intro-topline"><span>// loading portfolio</span><button type="button" data-intro-skip>Click to skip</button></div>
+  <div class="intro-brand" aria-hidden="true">
+    <span class="intro-muted">/</span><span class="intro-star">*</span><span>u</span><span class="intro-rest" data-intro-rest></span><span class="intro-star intro-closing">*</span><span class="intro-muted intro-closing">/</span><span class="intro-cursor"></span>
+  </div>
+  <div class="intro-progress-wrap">
+    <div class="intro-progress-meta"><span>// loading <span data-intro-progress>0</span>%</span><span>Hyderabad, Pakistan · UTC+5</span></div>
+    <div class="intro-progress-track"><span data-intro-bar></span></div>
+  </div>
+</div>
+
+<script>
+  const intro = document.querySelector<HTMLElement>('[data-intro]');
+  if (intro) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let seen = false;
+    try { seen = sessionStorage.getItem('usamar.intro.v1') === 'seen'; } catch (_) {}
+    if (!seen && !reduced) {
+      const progressLabel = intro.querySelector<HTMLElement>('[data-intro-progress]');
+      const bar = intro.querySelector<HTMLElement>('[data-intro-bar]');
+      const rest = intro.querySelector<HTMLElement>('[data-intro-rest]');
+      let frame = 0;
+      let complete = false;
+      let finishTimer = 0;
+      const startedAt = performance.now();
+      intro.hidden = false;
+      document.body.classList.add('intro-active');
+      intro.focus({ preventScroll: true });
+
+      const finish = () => {
+        if (complete) return;
+        complete = true;
+        cancelAnimationFrame(frame);
+        try { sessionStorage.setItem('usamar.intro.v1', 'seen'); } catch (_) {}
+        intro.classList.add('intro-leaving');
+        finishTimer = window.setTimeout(() => {
+          intro.hidden = true;
+          document.body.classList.remove('intro-active');
+          window.dispatchEvent(new Event('portfolio:intro-complete'));
+          const main = document.querySelector<HTMLElement>('#main');
+          main?.setAttribute('tabindex', '-1');
+          main?.focus({ preventScroll: true });
+        }, 680);
+      };
+
+      const tick = (now: number) => {
+        const ratio = Math.min(1, (now - startedAt) / 1850);
+        const eased = 1 - Math.pow(1 - ratio, 2.2);
+        const progress = Math.round(eased * 100);
+        if (progressLabel) progressLabel.textContent = String(progress);
+        if (bar) bar.style.transform = `scaleX(${eased})`;
+        if (rest) rest.textContent = 'sama'.slice(0, Math.max(0, Math.round(((ratio - 0.18) / 0.55) * 4)));
+        intro.classList.toggle('intro-near-done', ratio > 0.72);
+        if (ratio < 1) frame = requestAnimationFrame(tick);
+        else finishTimer = window.setTimeout(finish, 240);
+      };
+
+      intro.addEventListener('click', finish);
+      intro.addEventListener('keydown', (event) => { if (event.key === 'Escape') finish(); });
+      frame = requestAnimationFrame(tick);
+      window.addEventListener('pagehide', () => {
+        cancelAnimationFrame(frame);
+        window.clearTimeout(finishTimer);
+      }, { once: true });
+    }
+  }
+</script>

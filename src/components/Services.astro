@@ -23,10 +23,10 @@ const filters = [
   </div>
   <div class="services-grid" data-reveal>
     {SERVICES.map((service) => (
-      <article class="service-card" data-service-card={service.category} data-tilt>
+      <article class="service-card" data-service-card={service.category} data-spotlight>
         <div class="service-visual">
           <div class="service-figure"><span>fig. {service.index}</span><span>{service.category}</span></div>
-          <ServiceArtwork art={service.art} />
+          <button class="service-art-button" type="button" aria-label={`Inspect ${service.title} illustration and result`}><ServiceArtwork art={service.art} /></button>
           <p class="service-note">{service.note}</p>
         </div>
         <div class="service-copy">

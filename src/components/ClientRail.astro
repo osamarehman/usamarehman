@@ -11,7 +11,7 @@ import { CLIENTS } from '../data/site';
     <p class="client-comment">// a few of the teams I've built for</p>
     <div class="client-list" aria-label="Selected clients">
       <span class="client-code">const clients = [</span>
-      <div class="client-names">
+      <div class="client-names" data-scroll-x="0.03">
         {CLIENTS.map((client) => (
           <span class="client-name"><b>{client.mark}</b>{client.name}</span>
         ))}

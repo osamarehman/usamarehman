@@ -4,6 +4,7 @@ import type { ImageMetadata } from 'astro';
 import { ArrowUpRight } from './Icons';
 import { PRODUCTS } from '../data/site';
 import SectionHeading from './SectionHeading.astro';
+import ProductArtwork from './ProductArtwork.astro';
 
 interface Props {
   cover: ImageMetadata;
@@ -34,9 +35,9 @@ const { cover } = Astro.props;
 
   <div class="products-grid" data-reveal>
     {PRODUCTS.map((product) => (
-      <article class="product-card" data-tilt>
-        <div class:list={['product-glyph', `glyph-${product.art}`]} aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
+      <article class="product-card" data-spotlight>
+        <div class:list={['product-glyph', `glyph-${product.art}`]}>
+          <ProductArtwork art={product.art} />
         </div>
         <div class="product-card-head"><span>{product.index}</span><span>{product.status}</span></div>
         <h3>{product.name}</h3>

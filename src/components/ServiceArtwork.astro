@@ -3,42 +3,141 @@ interface Props { art: string }
 const { art } = Astro.props;
 ---
 
-<svg class="service-art" viewBox="0 0 280 160" fill="none" aria-hidden="true">
-  <path class="art-ground" d="M24 132h232M44 144h192" />
-  {art === 'crm' && <>
-    <g class="art-base"><path d="m85 45 55-28 55 28-55 28Z"/><path d="M85 45v54l55 28 55-28V45M85 63l55 28 55-28M85 81l55 28 55-28M85 99l55 28 55-28"/></g>
-    <g class="art-accent"><path d="m140 17 55 28v54l-55 28V73Z"/><circle cx="140" cy="72" r="5"/></g>
-  </>}
-  {art === 'phone' && <>
-    <g class="art-base"><rect x="103" y="19" width="74" height="116" rx="12"/><path d="M124 31h32M132 123h16M116 55h48M116 69h32M116 83h42"/></g>
-    <g class="art-accent"><path d="M88 57c-14 14-14 36 0 50M192 57c14 14 14 36 0 50M77 46c-20 22-20 50 0 72M203 46c20 22 20 50 0 72"/><circle cx="140" cy="98" r="7"/></g>
-  </>}
-  {art === 'portal' && <>
-    <g class="art-base"><rect x="50" y="33" width="180" height="94" rx="3"/><path d="M50 52h180M68 43h1M78 43h1M88 43h1M72 72h52v34H72zM141 72h66M141 86h52M141 100h59"/></g>
-    <g class="art-accent"><rect x="133" y="62" width="82" height="51" rx="2"/><path d="m146 99 14-13 12 7 18-20 13 9"/></g>
-  </>}
-  {art === 'sheet' && <>
-    <g class="art-base"><path d="M67 25h91l31 31v78H67Z"/><path d="M158 25v31h31M83 69h90M83 85h90M83 101h90M105 57v63M137 57v63"/></g>
-    <g class="art-accent"><path d="m177 91 28-28 25 25-28 28-25 3Z"/><path d="m205 63 10-10 25 25-10 10"/></g>
-  </>}
-  {art === 'workflow' && <>
-    <g class="art-base"><rect x="36" y="59" width="55" height="44" rx="5"/><rect x="177" y="24" width="65" height="42" rx="5"/><rect x="177" y="99" width="65" height="42" rx="5"/><path d="M91 81h38c18 0 18-36 48-36M129 81c18 0 18 39 48 39"/></g>
-    <g class="art-accent"><circle cx="130" cy="81" r="9"/><path d="M130 62v38M111 81h38M193 45h32M193 120h32"/></g>
-  </>}
-  {art === 'migration' && <>
-    <g class="art-base"><ellipse cx="76" cy="42" rx="35" ry="15"/><path d="M41 42v70c0 8 16 15 35 15s35-7 35-15V42M41 65c0 8 16 15 35 15s35-7 35-15M41 88c0 8 16 15 35 15s35-7 35-15"/><rect x="174" y="36" width="62" height="86" rx="4"/><path d="M188 56h34M188 72h34M188 88h34M188 104h22"/></g>
-    <g class="art-accent"><path d="M124 81h39M151 69l12 12-12 12"/><circle cx="145" cy="81" r="4"/></g>
-  </>}
-  {art === 'pipeline' && <>
-    <g class="art-base"><path d="M43 81h194M70 54v54M140 54v54M210 54v54"/><circle cx="70" cy="81" r="17"/><circle cx="140" cy="81" r="17"/><circle cx="210" cy="81" r="17"/></g>
-    <g class="art-accent"><path d="m62 81 6 6 11-14M132 81l6 6 11-14M202 81l6 6 11-14M70 42V25M140 42V25M210 42V25"/></g>
-  </>}
-  {art === 'server' && <>
-    <g class="art-base"><path d="m80 50 60-30 60 30-60 30Z"/><path d="M80 50v60l60 30 60-30V50M80 70l60 30 60-30M80 90l60 30 60-30M80 110l60 30 60-30"/></g>
-    <g class="art-accent"><path d="M140 80v60M99 60l20 10M99 80l20 10M99 100l20 10"/><circle cx="173" cy="63" r="4"/><circle cx="173" cy="83" r="4"/></g>
-  </>}
-  {art === 'operate' && <>
-    <g class="art-base"><circle cx="140" cy="80" r="50"/><circle cx="140" cy="80" r="24"/><path d="M140 30V14M140 146v-16M90 80H74M206 80h-16M105 45 93 33M187 127l-12-12M105 115l-12 12M187 33l-12 12"/></g>
-    <g class="art-accent"><path d="M140 56v24l17 17"/><circle cx="140" cy="80" r="5"/><path d="M140 20a60 60 0 0 1 55 36"/></g>
-  </>}
-</svg>
+<div class="service-artwork" aria-hidden="true">
+  <span class="sonar-core"></span><span class="sonar-ring ring-one"></span><span class="sonar-ring ring-two"></span><span class="sonar-ring ring-three"></span>
+  <svg class="service-art" viewBox="0 0 320 220" fill="none">
+    <path class="art-ground" d="M18 192h284M42 201h236" />
+    <path class="art-guide" d="M16 18h22M16 18v22M304 18h-22M304 18v22M16 202h22M16 202v-22M304 202h-22M304 202v-22" />
+    {art === 'crm' && <>
+      <g class="art-guide"><path d="M91 42v139M84 42h14M84 181h14M247 50v121M240 50h14M240 171h14"/><path d="m96 42 64-29 67 34M96 181l64 28 67-33"/></g>
+      <g class="art-base">
+        {[0, 1, 2, 3, 4].map((layer) => <g transform={`translate(0 ${layer * 25})`}>
+          <path d="m101 54 59-27 60 29-60 28Z"/><path d="M101 54v17l59 27 60-27V54M101 63l59 27 60-27"/>
+          <path d="M111 64v5l49 23 49-22v-5M116 70l44 20 44-20"/><path d="m116 65 17 8M116 70l17 8M188 72l14-7M188 77l14-7"/>
+          <circle cx="174" cy="72" r="1.7"/><circle cx="181" cy="75" r="1.7"/>
+        </g>)}
+        <path d="m145 43 15-7 15 7-15 7ZM145 68l15-7 15 7-15 7ZM145 93l15-7 15 7-15 7ZM145 118l15-7 15 7-15 7ZM145 143l15-7 15 7-15 7Z"/>
+        <rect x="24" y="55" width="55" height="48" rx="3"/><path d="M24 66h55M33 60h2M39 60h2M33 77h35M33 85h26M33 93h31"/>
+        <rect x="241" y="102" width="55" height="48" rx="3"/><path d="M241 113h55M250 107h2M256 107h2M250 124h35M250 132h26M250 140h31"/>
+      </g>
+      <g class="art-detail"><path d="M79 79h17l15 8M241 126h-16l-15-8M49 103v21M268 150v21M44 124h10M263 171h10"/><circle cx="49" cy="128" r="4"/><circle cx="268" cy="175" r="4"/></g>
+      <g class="art-accent art-trace"><path d="m160 27 60 29v17l-60 27-59-27V54Z"/><path d="M79 85h21l18 11M241 120h-21l-18-11"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="160" cy="75" r="4"/><circle cx="101" cy="96" r="2.5"/><circle cx="220" cy="109" r="2.5"/></g>
+      <text class="art-text" x="29" y="48">INPUT</text><text class="art-text" x="246" y="95">OUTPUT</text><text class="art-text art-text-accent" x="143" y="187">YOUR CRM</text>
+    </>}
+    {art === 'phone' && <>
+      <g class="art-guide"><path d="M104 25h112M104 18v14M216 18v14M104 184h112M104 177v14M216 177v14M98 31v147M91 31h14M91 178h14"/></g>
+      <g class="art-base">
+        <rect x="112" y="24" width="96" height="162" rx="15"/><rect x="118" y="31" width="84" height="148" rx="10"/>
+        <path d="M145 38h30M153 172h14M127 57h66M127 65h42"/><rect x="130" y="79" width="60" height="55" rx="5"/><path d="M139 91h42M139 124h42M139 97v20M146 97v20M153 97v20M160 97v20M167 97v20M174 97v20"/>
+        <rect x="18" y="54" width="67" height="51" rx="4"/><path d="M18 65h67M27 60h2M33 60h2M28 77h45M28 85h34M28 93h39"/>
+        <rect x="229" y="58" width="72" height="85" rx="4"/><path d="M229 75h72M238 65h2M244 65h2M239 86h52M239 95h52M239 104h52M239 113h52M239 122h52M250 80v48M261 80v48M272 80v48M283 80v48"/>
+        <path d="M247 58v17M282 58v17M85 80h15l12 5M208 100h12l9 4"/>
+      </g>
+      <g class="art-detail"><path d="M104 62c-12 13-12 59 0 74M97 53c-18 20-18 72 0 92M216 62c12 13 12 59 0 74M222 53c18 20 18 72 0 92"/><path d="M127 148h66M135 155h50M143 162h34"/></g>
+      <g class="art-accent art-trace"><path d="M138 116v-9l6-9 6 13 6-23 6 28 6-19 6 11 6-5 6 4"/><path d="M208 100h21l10 5"/><path d="m254 110 5 5 10-12"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="160" cy="146" r="3"/><circle cx="106" cy="100" r="2.5"/><circle cx="216" cy="100" r="2.5"/></g>
+      <text class="art-text" x="30" y="47">VOICE</text><text class="art-text" x="245" y="51">CALENDAR</text><text class="art-text art-text-accent" x="139" y="198">AI AGENT</text>
+    </>}
+    {art === 'portal' && <>
+      <g class="art-guide"><path d="M34 34h183M34 27v14M217 27v14M34 177h183M34 170v14M217 170v14M225 60h72M225 53v14M297 53v14"/></g>
+      <g class="art-base">
+        <rect x="36" y="36" width="179" height="137" rx="4"/><path d="M36 53h179M47 44h2M55 44h2M63 44h2M75 44h48M36 65h179"/>
+        <rect x="48" y="77" width="66" height="38" rx="2"/><path d="M55 85h33M55 93h52M55 101h43M55 109h28"/>
+        <rect x="126" y="77" width="76" height="38" rx="2"/><path d="M133 85h25M133 109h62M133 99l10-6 9 4 10-10 9 5 11-8 12 6"/>
+        <rect x="48" y="126" width="154" height="32" rx="2"/><path d="M57 134h51M57 142h36M57 150h45M122 134h69M122 142h54M122 150h62"/>
+        <rect x="229" y="60" width="66" height="116" rx="10"/><rect x="234" y="68" width="56" height="98" rx="5"/>
+        <path d="M251 64h22M245 78h34M245 85h24M245 96h34M245 103h34M245 110h34M245 124h34M245 131h22M245 145h34M245 152h25"/>
+        <circle cx="250" cy="116" r="3"/><circle cx="260" cy="116" r="3"/><circle cx="270" cy="116" r="3"/><path d="M142 173v10M110 183h64M262 176v7M250 183h24"/>
+      </g>
+      <g class="art-detail"><path d="M215 92h14M215 130h14M215 86l14-10M215 137l14 10"/><circle cx="222" cy="76" r="2"/><circle cx="222" cy="147" r="2"/></g>
+      <g class="art-accent art-trace"><path d="M215 109h14M222 103l7 6-7 6"/><path d="M133 109h62M133 99l10-6 9 4 10-10 9 5 11-8 12 6"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="222" cy="109" r="3"/><circle class="art-fill" cx="262" cy="137" r="8"/><path d="m258 137 3 3 5-6"/></g>
+      <text class="art-text" x="46" y="29">ADMIN PORTAL</text><text class="art-text" x="237" y="53">MEMBER</text><text class="art-text art-text-accent" x="207" y="96">SYNC</text>
+    </>}
+    {art === 'sheet' && <>
+      <g class="art-guide"><path d="M27 28h115M27 21v14M142 21v14M27 181h115M27 174v14M142 174v14M174 47h118M174 40v14M292 40v14"/></g>
+      <g class="art-base">
+        <path d="M31 29h79l28 28v122H31Z"/><path d="M110 29v28h28M42 60h84M42 75h84M42 90h84M42 105h84M42 120h84M42 135h84M42 150h84M42 165h84M57 49v116M75 49v116M94 60v105M111 60v105"/>
+        <path d="M45 45h19M45 54h11M80 66h9M98 81h9M61 96h9M79 111h9M98 126h9M61 141h9M114 66h9M114 96h9"/>
+        <rect x="178" y="48" width="112" height="112" rx="4"/><path d="M178 65h112M188 55h2M194 55h2M212 65v95M251 65v95"/>
+        <rect x="186" y="75" width="18" height="20" rx="2"/><rect x="186" y="103" width="18" height="29" rx="2"/><rect x="220" y="75" width="23" height="28" rx="2"/><rect x="220" y="111" width="23" height="20" rx="2"/><rect x="259" y="75" width="23" height="38" rx="2"/><rect x="259" y="121" width="23" height="20" rx="2"/>
+        <path d="M190 81h10M190 87h7M190 110h10M190 116h7M224 81h15M224 87h11M224 118h15M263 81h15M263 87h11M263 94h13M263 128h15"/>
+      </g>
+      <g class="art-detail"><path d="M138 99h40M151 91l9 8-9 8M151 146h27M178 174h112M194 168v12M270 168v12"/><path d="m47 156 8-8 7 11 9-18 8 5 10-14"/></g>
+      <g class="art-accent art-trace"><path d="M138 99h40M164 91l9 8-9 8"/><path d="m47 156 8-8 7 11 9-18 8 5 10-14"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="160" cy="99" r="3"/><rect class="art-fill" x="255" y="71" width="31" height="46" rx="2"/></g>
+      <text class="art-text" x="37" y="190">SPREADSHEET</text><text class="art-text" x="207" y="174">WORKING APP</text><text class="art-text art-text-accent" x="145" y="87">BUILD</text>
+    </>}
+    {art === 'workflow' && <>
+      <g class="art-guide"><path d="M28 110h264M160 25v170M27 25h266M27 195h266"/></g>
+      <g class="art-base">
+        <rect x="23" y="82" width="60" height="57" rx="5"/><path d="M23 95h60M33 88h2M39 88h2M34 107h38M34 115h29M34 123h34"/>
+        <rect x="110" y="28" width="77" height="51" rx="5"/><path d="M110 41h77M120 34h2M126 34h2M121 53h55M121 61h41M121 69h48"/>
+        <rect x="207" y="28" width="86" height="51" rx="5"/><path d="M207 41h86M217 34h2M223 34h2M218 53h64M218 61h47M218 69h57"/>
+        <rect x="207" y="139" width="86" height="51" rx="5"/><path d="M207 152h86M217 145h2M223 145h2M218 164h64M218 172h47M218 180h57"/>
+        <rect x="110" y="139" width="77" height="51" rx="5"/><path d="M110 152h77M120 145h2M126 145h2M121 164h55M121 172h41M121 180h48"/>
+        <path d="M83 110h49c18 0 9-56 28-56h47M83 110h49c18 0 9 54 28 54h47M187 54h20M187 164h20M160 79v60M250 79v60"/>
+      </g>
+      <g class="art-detail"><path d="m140 91 20-15 20 15-20 15ZM140 130l20-15 20 15-20 15Z"/><circle cx="160" cy="110" r="17"/><path d="M150 110h20M160 100v20M96 102v16M91 110h10M298 102v16M293 110h10"/></g>
+      <g class="art-accent art-trace"><path d="M83 110h49c18 0 9-56 28-56h47M83 110h49c18 0 9 54 28 54h47M187 54h20M187 164h20"/><circle cx="160" cy="110" r="10"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="107" cy="110" r="3"/><circle class="art-blink" cx="197" cy="54" r="3"/><circle class="art-blink" cx="197" cy="164" r="3"/></g>
+      <text class="art-text" x="31" y="75">TRIGGER</text><text class="art-text" x="121" y="21">CODE</text><text class="art-text" x="223" y="21">API</text><text class="art-text" x="121" y="202">CRM</text><text class="art-text" x="220" y="202">AGENT</text>
+    </>}
+    {art === 'migration' && <>
+      <g class="art-guide"><path d="M28 40h83M28 33v14M111 33v14M28 174h83M28 167v14M111 167v14M208 40h83M208 33v14M291 33v14M208 174h83M208 167v14M291 167v14"/></g>
+      <g class="art-base">
+        <ellipse cx="69" cy="48" rx="39" ry="17"/><path d="M30 48v118c0 10 18 18 39 18s39-8 39-18V48"/><ellipse cx="69" cy="48" rx="29" ry="10"/><path d="M30 72c0 10 18 18 39 18s39-8 39-18M30 96c0 10 18 18 39 18s39-8 39-18M30 120c0 10 18 18 39 18s39-8 39-18M30 144c0 10 18 18 39 18s39-8 39-18M30 166c0 10 18 18 39 18s39-8 39-18M41 74c7 5 17 8 28 8s21-3 28-8M41 98c7 5 17 8 28 8s21-3 28-8M41 122c7 5 17 8 28 8s21-3 28-8M41 146c7 5 17 8 28 8s21-3 28-8"/>
+        <ellipse cx="250" cy="48" rx="39" ry="17"/><path d="M211 48v118c0 10 18 18 39 18s39-8 39-18V48"/><ellipse cx="250" cy="48" rx="29" ry="10"/><path d="M211 72c0 10 18 18 39 18s39-8 39-18M211 96c0 10 18 18 39 18s39-8 39-18M211 120c0 10 18 18 39 18s39-8 39-18M211 144c0 10 18 18 39 18s39-8 39-18M211 166c0 10 18 18 39 18s39-8 39-18M222 74c7 5 17 8 28 8s21-3 28-8M222 98c7 5 17 8 28 8s21-3 28-8M222 122c7 5 17 8 28 8s21-3 28-8M222 146c7 5 17 8 28 8s21-3 28-8"/>
+        <path d="M120 108h80M185 96l15 12-15 12M133 77h54M133 139h54"/>
+      </g>
+      <g class="art-detail"><path d="M131 88h12M151 88h12M171 88h12M131 128h12M151 128h12M171 128h12M146 58h28M146 158h28"/><rect x="130" y="173" width="60" height="22" rx="3"/><path d="M138 184h44"/></g>
+      <g class="art-accent art-trace"><path d="M120 108h80M185 96l15 12-15 12"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="139" cy="108" r="3"/><circle class="art-blink" cx="158" cy="108" r="3"/><circle class="art-blink" cx="177" cy="108" r="3"/><path d="m145 184 5 5 11-12"/></g>
+      <text class="art-text" x="47" y="198">SOURCE</text><text class="art-text" x="229" y="198">TARGET</text><text class="art-text art-text-accent" x="140" y="103">PARITY</text>
+    </>}
+    {art === 'pipeline' && <>
+      <g class="art-guide"><path d="M35 109h250M35 42v134M285 42v134M35 42h250M35 176h250"/></g>
+      <g class="art-base">
+        <path d="M48 109h224M68 80v58M120 80v58M172 80v58M224 80v58M272 80v58"/>
+        <circle cx="68" cy="109" r="25"/><circle cx="120" cy="109" r="25"/><circle cx="172" cy="109" r="25"/><circle cx="224" cy="109" r="25"/><circle cx="272" cy="109" r="14"/>
+        <circle cx="68" cy="109" r="17"/><circle cx="120" cy="109" r="17"/><circle cx="172" cy="109" r="17"/><circle cx="224" cy="109" r="17"/>
+        <path d="M68 80V57h52v23M120 80V42h52v38M172 80V57h52v23M224 80V42h48v38M60 62h16M60 69h11M113 51h16M113 58h11M113 65h16M165 62h16M165 69h11M217 51h16M217 58h11M217 65h16M272 123c0 48-50 60-102 60M170 176l-12 7 12 7M68 134v22h52v-22M120 134v38h52v-38M172 134v22h52v-22M60 149h16M113 149h16M113 158h16M165 149h16"/>
+      </g>
+      <g class="art-detail"><path d="m61 109 5 5 10-12M113 109l5 5 10-12M165 109l5 5 10-12M217 109l5 5 10-12M267 109l4 4 7-8M43 55v-12h12M43 55l9-9M43 176v12h12M43 176l9 9"/></g>
+      <g class="art-accent art-trace"><path d="M48 109h224M272 123c0 48-50 60-102 60M170 176l-12 7 12 7"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="94" cy="109" r="3"/><circle class="art-blink" cx="146" cy="109" r="3"/><circle class="art-blink" cx="198" cy="109" r="3"/><circle class="art-blink" cx="250" cy="109" r="3"/></g>
+      <text class="art-text" x="55" y="194">TEST</text><text class="art-text" x="104" y="194">REVIEW</text><text class="art-text" x="160" y="194">MERGE</text><text class="art-text" x="213" y="194">DEPLOY</text><text class="art-text art-text-accent" x="163" y="24">ROLLBACK READY</text>
+    </>}
+    {art === 'server' && <>
+      <g class="art-guide"><path d="M89 39h142M89 32v14M231 32v14M89 181h142M89 174v14M231 174v14M82 46v127M75 46h14M75 173h14"/></g>
+      <g class="art-base">
+        <rect x="93" y="40" width="134" height="140" rx="5"/><path d="M99 47h122M99 173h122M105 40v140M215 40v140"/>
+        {[0, 1, 2, 3, 4].map((unit) => <g transform={`translate(0 ${unit * 25})`}>
+          <rect x="109" y="52" width="102" height="20" rx="2"/><path d="M116 58h32M116 64h22M157 58h24M157 64h17M192 58h10M192 64h10"/><circle cx="187" cy="62" r="1.6"/><circle cx="198" cy="62" r="1.6"/><circle cx="205" cy="62" r="1.6"/>
+        </g>)}
+        <path d="M125 40V28h70v12M143 28V17h34v11M150 17V9h20v8M48 105c-14 0-22-9-22-20s9-20 21-20c5-14 17-21 29-17 8 2 14 8 17 15 13-2 23 6 23 17 0 14-11 25-27 25Z"/>
+        <path d="M58 83h34M58 91h24M58 99h30M244 115h51v55h-51Z"/><path d="M244 115l25 14 26-14M270 129v41M251 137h12M251 145h12M251 153h12M277 137h11M277 145h11M277 153h11"/>
+      </g>
+      <g class="art-detail"><path d="M76 105h17M227 64h25l17 14M93 151H76l-18-14"/><path d="M60 115v10c0 12 9 20 20 20s20-8 20-20v-10M55 115h50v-17c0-11-7-18-25-18s-25 7-25 18Z"/><path d="M72 115v-14c0-5 3-8 8-8s8 3 8 8v14"/></g>
+      <g class="art-accent art-trace"><path d="M109 102h102M109 127h102M109 152h102M227 64h25l17 14"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="187" cy="62" r="2.5"/><circle class="art-blink" cx="187" cy="87" r="2.5"/><circle class="art-blink" cx="187" cy="112" r="2.5"/><circle class="art-blink" cx="187" cy="137" r="2.5"/><circle class="art-blink" cx="187" cy="162" r="2.5"/></g>
+      <text class="art-text" x="38" y="158">ENCRYPTED</text><text class="art-text" x="250" y="183">RUNBOOK</text><text class="art-text art-text-accent" x="128" y="198">YOUR CLOUD</text>
+    </>}
+    {art === 'operate' && <>
+      <g class="art-guide"><circle cx="160" cy="108" r="83"/><circle cx="160" cy="108" r="70"/><path d="M160 16v184M68 108h184"/></g>
+      <g class="art-base">
+        <circle cx="160" cy="108" r="57"/><circle cx="160" cy="108" r="43"/><circle cx="160" cy="108" r="28"/>
+        {Array.from({ length: 24 }).map((_, index) => <path d="M160 44v7" transform={`rotate(${index * 15} 160 108)`} />)}
+        <path d="M160 80v29l21 17M143 138h34M150 145h20M160 65v6M160 145v6M117 108h6M197 108h6"/>
+        <rect x="18" y="51" width="65" height="46" rx="4"/><path d="M18 62h65M27 57h2M33 57h2M28 74h43M28 82h32M28 89h38"/>
+        <rect x="237" y="121" width="65" height="46" rx="4"/><path d="M237 132h65M246 127h2M252 127h2M247 144h43M247 152h32M247 159h38"/>
+        <path d="M83 74h19l18 10M237 144h-20l-15-10M50 97v19M270 121v-19M45 116h10M265 102h10"/>
+      </g>
+      <g class="art-detail"><path d="M132 108h12l7-16 10 34 9-25 8 7h14"/><circle class="art-orbit" style="transform-origin:160px 108px" cx="160" cy="25" r="5"/><path d="M50 116v11M270 102v11"/></g>
+      <g class="art-accent art-trace"><path d="M132 108h12l7-16 10 34 9-25 8 7h14"/><path d="M83 74h19l18 10M237 144h-20l-15-10"/></g>
+      <g class="art-accent"><circle class="art-blink" cx="160" cy="108" r="4"/><circle class="art-fill" cx="160" cy="51" r="4"/></g>
+      <text class="art-text" x="26" y="44">BACKUP</text><text class="art-text" x="247" y="114">RUNBOOK</text><text class="art-text art-text-accent" x="134" y="200">OPERATE</text>
+    </>}
+  </svg>
+</div>

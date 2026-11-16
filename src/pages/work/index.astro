@@ -2,10 +2,11 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import GenerativeVisual from '../../components/GenerativeVisual.astro';
+import ServiceArtwork from '../../components/ServiceArtwork.astro';
 import { ArrowUpRight } from '../../components/Icons';
 
 const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const artFor = (kind: string) => kind === 'migration' ? 'migration' : kind === 'pipeline' ? 'workflow' : kind === 'configurator' ? 'phone' : kind === 'portal' ? 'portal' : kind === 'product' ? 'crm' : 'sheet';
 ---
 
 <BaseLayout title="Selected work | Usama Rehman" description="Custom CRMs, member portals, AI agents, coded automations and internal tools built and operated by Usama Rehman.">
@@ -17,8 +18,8 @@ const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b
   <section class="work-index shell" aria-label="All case studies">
     {work.map((entry) => (
       <a class="work-index-card" href={`/work/${entry.id}`} data-reveal>
-        <div class="work-index-visual">
-          {entry.data.cover ? <Image src={entry.data.cover} alt={entry.data.coverAlt || ''} widths={[640, 960, 1280]} sizes="(max-width: 800px) 100vw, 45vw" loading="lazy" /> : <GenerativeVisual kind={entry.data.kind} label={entry.data.client} />}
+        <div class:list={['work-index-visual', { 'work-index-blueprint': !entry.data.cover }]}>
+          {entry.data.cover ? <Image src={entry.data.cover} alt={entry.data.coverAlt || ''} widths={[640, 960, 1280]} sizes="(max-width: 800px) 100vw, 45vw" loading="lazy" /> : <ServiceArtwork art={artFor(entry.data.kind)} />}
         </div>
         <div class="work-index-copy">
           <div class="work-index-meta"><span>{String(entry.data.order).padStart(2, '0')} / {entry.data.type}</span><span>{entry.data.category === 'product' ? 'My own product' : 'Client work'}</span></div>

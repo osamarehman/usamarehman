@@ -1,9 +1,10 @@
 ---
-import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/plus-jakarta-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '@fontsource/instrument-serif/400.css';
 import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
+import '../styles/refinements.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE } from '../data/site';
@@ -24,14 +25,14 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="author" content={SITE.name} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#f4f1ea" />
+    <meta name="theme-color" content="#0d0d0f" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/profile.png" />
@@ -51,7 +52,7 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
     <script is:inline>
       (() => {
         try {
-          const theme = localStorage.getItem('usamar.theme') || 'light';
+          const theme = localStorage.getItem('usamar.theme.v2') || 'dark';
           document.documentElement.dataset.theme = theme;
           document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0d0d0f' : '#f4f1ea';
         } catch (_) {}
@@ -91,7 +92,7 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
           const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
           root.dataset.theme = theme;
           document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0d0d0f' : '#f4f1ea');
-          try { localStorage.setItem('usamar.theme', theme); } catch (_) {}
+          try { localStorage.setItem('usamar.theme.v2', theme); } catch (_) {}
           window.dispatchEvent(new CustomEvent('portfolio:theme', { detail: theme }));
           updateThemeControls();
         });
@@ -123,9 +124,42 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
       window.setInterval(clock, 30000);
 
       const revealElements = document.querySelectorAll('[data-reveal]');
-      if (reducedMotion.matches || !('IntersectionObserver' in window)) {
-        revealElements.forEach((element) => element.classList.add('is-visible'));
-      } else {
+      const counterElements = document.querySelectorAll<HTMLElement>('[data-count]');
+
+      const animateCounter = (element: HTMLElement) => {
+        if (element.dataset.counted === 'true') return;
+        const final = element.textContent?.trim() || '';
+        const target = Number(final.replace(/[^0-9.]/g, ''));
+        if (!Number.isFinite(target)) return;
+        element.dataset.counted = 'true';
+        if (reducedMotion.matches) {
+          element.textContent = final;
+          return;
+        }
+        const prefix = final.match(/^\D*/)?.[0] || '';
+        const suffix = final.match(/\D*$/)?.[0] || '';
+        const decimals = final.includes('.') ? 1 : 0;
+        const formatter = new Intl.NumberFormat('en-US', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        });
+        const startedAt = performance.now();
+        const step = (now: number) => {
+          const ratio = Math.min(1, (now - startedAt) / 1150);
+          const eased = 1 - Math.pow(1 - ratio, 3);
+          element.textContent = `${prefix}${formatter.format(target * eased)}${suffix}`;
+          if (ratio < 1) requestAnimationFrame(step);
+          else element.textContent = final;
+        };
+        requestAnimationFrame(step);
+      };
+
+      const initializeReveals = () => {
+        if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+          revealElements.forEach((element) => element.classList.add('is-visible'));
+          counterElements.forEach(animateCounter);
+          return;
+        }
         const revealObserver = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -135,31 +169,65 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
           });
         }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
         revealElements.forEach((element) => revealObserver.observe(element));
+
+        const counterObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target as HTMLElement);
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.4 });
+        counterElements.forEach((element) => counterObserver.observe(element));
+      };
+
+      if (document.body.classList.contains('intro-active')) {
+        window.addEventListener('portfolio:intro-complete', initializeReveals, { once: true });
+      } else {
+        initializeReveals();
       }
 
       if (!reducedMotion.matches && window.matchMedia('(hover: hover)').matches) {
-        document.querySelectorAll('[data-tilt]').forEach((card) => {
+        document.querySelectorAll('[data-spotlight]').forEach((card) => {
           const element = card as HTMLElement;
           element.addEventListener('pointermove', (event) => {
             const rect = element.getBoundingClientRect();
-            const x = (event.clientX - rect.left) / rect.width - 0.5;
-            const y = (event.clientY - rect.top) / rect.height - 0.5;
-            element.style.setProperty('--tilt-x', `${(-y * 4).toFixed(2)}deg`);
-            element.style.setProperty('--tilt-y', `${(x * 5).toFixed(2)}deg`);
-            element.style.setProperty('--glow-x', `${((x + 0.5) * 100).toFixed(1)}%`);
-            element.style.setProperty('--glow-y', `${((y + 0.5) * 100).toFixed(1)}%`);
-          });
-          element.addEventListener('pointerleave', () => {
-            element.style.setProperty('--tilt-x', '0deg');
-            element.style.setProperty('--tilt-y', '0deg');
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = (event.clientY - rect.top) / rect.height;
+            element.style.setProperty('--glow-x', `${(x * 100).toFixed(1)}%`);
+            element.style.setProperty('--glow-y', `${(y * 100).toFixed(1)}%`);
           });
         });
       }
 
+      const scrollXElements = document.querySelectorAll<HTMLElement>('[data-scroll-x]');
+      const aboutWords = Array.from(document.querySelectorAll<HTMLElement>('.about-statement span'));
       let ticking = false;
       const updateScroll = () => {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         root.style.setProperty('--page-progress', String(scrollable > 0 ? window.scrollY / scrollable : 0));
+
+        if (reducedMotion.matches) {
+          aboutWords.forEach((word) => { word.style.opacity = '1'; });
+          scrollXElements.forEach((element) => element.style.setProperty('--scroll-x', '0px'));
+        } else {
+          scrollXElements.forEach((element) => {
+            const rect = element.getBoundingClientRect();
+            const speed = Number(element.getAttribute('data-scroll-x')) || 0;
+            const progress = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
+            element.style.setProperty('--scroll-x', `${(-progress * speed * 600).toFixed(2)}px`);
+          });
+
+          const statement = document.querySelector<HTMLElement>('.about-statement');
+          if (statement && aboutWords.length) {
+            const rect = statement.getBoundingClientRect();
+            const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.84 - rect.top) / (rect.height + window.innerHeight * 0.38)));
+            aboutWords.forEach((word, index) => {
+              const local = Math.min(1, Math.max(0, progress * aboutWords.length - index * 0.82));
+              word.style.opacity = String(0.14 + local * 0.86);
+            });
+          }
+        }
         ticking = false;
       };
       window.addEventListener('scroll', () => {
@@ -168,6 +236,7 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
           requestAnimationFrame(updateScroll);
         }
       }, { passive: true });
+      window.addEventListener('resize', updateScroll);
       updateScroll();
     </script>
   </body>
