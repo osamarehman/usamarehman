@@ -1,0 +1,22 @@
+---
+import { CLIENTS } from '../data/site';
+---
+
+<div class="client-rail" data-reveal>
+  <div class="client-rail-head">
+    <span>clients.ts</span>
+    <span>{CLIENTS.length} teams · US, Australia and Europe</span>
+  </div>
+  <div class="client-rail-body">
+    <p class="client-comment">// a few of the teams I've built for</p>
+    <div class="client-list" aria-label="Selected clients">
+      <span class="client-code">const clients = [</span>
+      <div class="client-names">
+        {CLIENTS.map((client) => (
+          <span class="client-name"><b>{client.mark}</b>{client.name}</span>
+        ))}
+      </div>
+      <span class="client-code">]</span>
+    </div>
+  </div>
+</div>

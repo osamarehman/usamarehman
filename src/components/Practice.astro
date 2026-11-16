@@ -1,0 +1,24 @@
+---
+import { PROCESS, PROOF_STATS } from '../data/site';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section class="section shell practice-section" aria-labelledby="process-title">
+  <SectionHeading id="process-title" index="05" label="how I work" title="From the workflow" accent="to a system I run." description="Start with the real workflow, build from what it shows, and keep the system running after launch." />
+  <ol class="process-grid" data-reveal>
+    {PROCESS.map((step) => (
+      <li class="process-step">
+        <span class="process-number">{step.index}</span>
+        <div class="process-line"><span></span></div>
+        <h3>{step.title}</h3>
+        <p>{step.description}</p>
+      </li>
+    ))}
+  </ol>
+  <div class="proof-panel" data-reveal>
+    <div class="proof-panel-heading"><p class="mono-label">06 // the record</p><a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">View Upwork profile ↗</a></div>
+    <div class="proof-grid">
+      {PROOF_STATS.map((stat) => <div class="proof-item"><strong>{stat.value}</strong><span>{stat.label}</span></div>)}
+    </div>
+  </div>
+</section>

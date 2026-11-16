@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import profile from '../assets/profile.png';
+import { SITE, SKILLS } from '../data/site';
+import SectionHeading from './SectionHeading.astro';
+
+const statement = 'Ordinary code. Your repo. Your server. I do the architecture and the review, and I stay on to run it.';
+---
+
+<section class="section shell" id="about" aria-labelledby="about-title">
+  <SectionHeading id="about-title" index="04" label="about" title="One person for the build," accent="and what comes after." />
+  <div class="about-grid">
+    <div class="about-main">
+      <p class="about-statement" data-reveal>
+        {statement.split(' ').map((word, index) => <span style={`--word-index:${index}`}>{word}{' '}</span>)}
+      </p>
+      <div class="about-copy" data-reveal>
+        <p>I work with any business tied to a CRM, a billing system or no-code workflows it has outgrown. So far that covers roofing and exteriors, home building, gyms and coaching, an automation agency, M&A deal sourcing, sign manufacturing, hotels, solar sales and heat pumps.</p>
+        <p>I write ordinary code in a repo you own. No n8n, Zapier or Make in new builds. Everything runs on one server in your own cloud account, about $25 a month, with encrypted backups and a written runbook.</p>
+        <p>I build with Claude Code and I do the architecture and the review myself. Changes ship through a test-gated pipeline with automatic rollback.</p>
+        <p><strong>If a cheap off-the-shelf tool already does the job, buy the tool.</strong> I'll tell you that on the first call.</p>
+      </div>
+    </div>
+    <aside class="profile-card" data-reveal data-tilt>
+      <div class="profile-image"><Image src={profile} alt="Usama Rehman" widths={[360, 540, 720]} sizes="(max-width: 900px) 70vw, 280px" loading="lazy" /></div>
+      <div class="profile-caption"><span>{SITE.name}</span><small>{SITE.location}</small></div>
+      <dl class="profile-facts">
+        <div><dt>Freelancing since</dt><dd>Sep 2021</dd></div>
+        <div><dt>Working hours</dt><dd>US + Australia</dd></div>
+        <div><dt>Upwork</dt><dd>Top Rated Plus</dd></div>
+        <div><dt>Rating</dt><dd>4.9 · 22 reviews</dd></div>
+      </dl>
+    </aside>
+  </div>
+  <div class="skills-table" data-reveal>
+    {SKILLS.map((skill, index) => (
+      <div class="skill-row"><span>{String(index + 1).padStart(2, '0')}</span><h3>{skill.group}</h3><p>{skill.items}</p></div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,145 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GenerativeVisual from '../../components/GenerativeVisual.astro';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Expand } from '../../components/Icons';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work', ({ data }) => !data.draft);
+  return work.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'work'> }
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+const allWork = (await getCollection('work', ({ data: item }) => !item.draft)).sort((a, b) => a.data.order - b.data.order);
+const currentIndex = allWork.findIndex((item) => item.id === entry.id);
+const next = allWork[(currentIndex + 1) % allWork.length];
+---
+
+<BaseLayout title={`${data.client} | Usama Rehman`} description={data.summary} image={data.cover?.src}>
+  <article class="case-page">
+    <header class="case-hero shell" data-reveal>
+      <div class="breadcrumbs"><a href="/work"><ArrowLeft size={13} /> All work</a><span>/</span><span>{String(data.order).padStart(2, '0')}</span></div>
+      <div class="case-hero-grid">
+        <div>
+          <p class="mono-label">{data.category === 'product' ? 'My own product' : 'Client work'} // {data.type}</p>
+          <h1>{data.title}</h1>
+          <p class="case-headline">{data.headlineMetric}</p>
+        </div>
+        <div class="case-intro">
+          <p>{data.summary}</p>
+          <div class="case-links">
+            {data.links.map((link) => <a class="button button-small" href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noreferrer' : undefined}>{link.label}<ArrowUpRight size={14} /></a>)}
+          </div>
+        </div>
+      </div>
+      <dl class="case-meta">
+        <div><dt>Client / product</dt><dd>{data.client}</dd></div>
+        <div><dt>Context</dt><dd>{data.subtitle}</dd></div>
+        {data.stack.length > 0 && <div><dt>Stack and integrations</dt><dd>{data.stack.join(', ')}</dd></div>}
+      </dl>
+    </header>
+
+    <div class="case-cover shell" data-reveal>
+      {data.cover ? (
+        <figure data-tilt>
+          <Image src={data.cover} alt={data.coverAlt || ''} widths={[840, 1280, 1800, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+          <figcaption><span>{data.coverCaption}</span><span>Fig. {String(data.order).padStart(2, '0')}</span></figcaption>
+        </figure>
+      ) : <GenerativeVisual kind={data.kind} label={data.client} />}
+    </div>
+
+    {data.metrics.length > 0 && (
+      <section class="case-metrics shell" aria-label="Project results" data-reveal>
+        {data.metrics.map((metric) => <div><strong>{metric.value}</strong><span>{metric.label}</span></div>)}
+      </section>
+    )}
+
+    <div class="case-body shell">
+      <aside class="case-body-aside" data-reveal>
+        <p class="mono-label">System record</p>
+        <span>{data.type}</span>
+        <span>{data.client}</span>
+        <a href="/#contact">Discuss a similar workflow ↗</a>
+      </aside>
+      <div class="case-sections">
+        {data.challenge && <section data-reveal><p class="mono-label">01 // the challenge</p><h2>The workflow needed its own system.</h2><p>{data.challenge}</p></section>}
+        {data.architecture && <section data-reveal><p class="mono-label">02 // what I built</p><h2>Architecture follows the actual work.</h2><p>{data.architecture}</p></section>}
+        {data.outcome && <section data-reveal><p class="mono-label">03 // the result</p><h2>What changed in production.</h2><p>{data.outcome}</p></section>}
+        {entry.body?.trim() && <div class="case-prose" data-reveal><Content /></div>}
+      </div>
+    </div>
+
+    {data.gallery.length > 0 && (
+      <section class="case-gallery shell" aria-labelledby="gallery-title" data-gallery>
+        <div class="case-gallery-heading" data-reveal><p class="mono-label">04 // project views</p><h2 id="gallery-title">Inside the system.</h2><p>Select any image to inspect it. Use the arrow keys to move through the gallery.</p></div>
+        <div class="gallery-grid" data-reveal>
+          {data.gallery.map((item, index) => (
+            <figure class:list={['gallery-item', { portrait: item.image.height > item.image.width }]}>
+              <button type="button" data-gallery-item={index} data-full={item.image.src} data-alt={item.alt} data-caption={item.caption} aria-label={`Open image: ${item.caption}`}>
+                <Image src={item.image} alt={item.alt} widths={[520, 840, 1200]} sizes={item.image.height > item.image.width ? '(max-width: 700px) 50vw, 25vw' : '(max-width: 700px) 100vw, 50vw'} loading="lazy" />
+                <span class="gallery-open"><Expand size={15} /></span>
+              </button>
+              <figcaption><span>{item.caption}</span><span>{String(index + 1).padStart(2, '0')}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+        <dialog class="lightbox" data-lightbox aria-label="Project image viewer">
+          <button class="lightbox-close" type="button" data-lightbox-close aria-label="Close image viewer">×</button>
+          <button class="lightbox-arrow lightbox-prev" type="button" data-lightbox-prev aria-label="Previous image"><ArrowLeft size={20} /></button>
+          <figure><img data-lightbox-image alt="" /><figcaption data-lightbox-caption></figcaption></figure>
+          <button class="lightbox-arrow lightbox-next" type="button" data-lightbox-next aria-label="Next image"><ArrowRight size={20} /></button>
+        </dialog>
+      </section>
+    )}
+
+    <nav class="next-project shell" aria-label="Next project" data-reveal>
+      <span class="mono-label">Next project</span>
+      <a href={`/work/${next.id}`}><span><small>{next.data.client}</small>{next.data.title}</span><ArrowRight size={30} /></a>
+    </nav>
+  </article>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-gallery]').forEach((gallery) => {
+    const dialog = gallery.querySelector<HTMLDialogElement>('[data-lightbox]');
+    const image = gallery.querySelector<HTMLImageElement>('[data-lightbox-image]');
+    const caption = gallery.querySelector<HTMLElement>('[data-lightbox-caption]');
+    const items = Array.from(gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-item]'));
+    if (!dialog || !image || !caption || !items.length) return;
+    let current = 0;
+    let trigger: HTMLButtonElement | null = null;
+
+    const show = (index: number) => {
+      current = (index + items.length) % items.length;
+      const item = items[current];
+      image.src = item.dataset.full || '';
+      image.alt = item.dataset.alt || '';
+      caption.textContent = item.dataset.caption || '';
+    };
+    const open = (index: number, button: HTMLButtonElement) => {
+      trigger = button;
+      show(index);
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => dialog.close();
+    items.forEach((item, index) => item.addEventListener('click', () => open(index, item)));
+    gallery.querySelector('[data-lightbox-close]')?.addEventListener('click', close);
+    gallery.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(current - 1));
+    gallery.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); show(current + 1); }
+    });
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = '';
+      image.src = '';
+      trigger?.focus();
+    });
+  });
+</script>

@@ -1,0 +1,58 @@
+---
+import { SERVICES } from '../data/site';
+import SectionHeading from './SectionHeading.astro';
+import ServiceArtwork from './ServiceArtwork.astro';
+
+const filters = [
+  { id: 'all', label: 'All capabilities', count: SERVICES.length },
+  { id: 'build', label: 'Build it', count: SERVICES.filter((service) => service.category === 'build').length },
+  { id: 'fix', label: 'Fix it', count: SERVICES.filter((service) => service.category === 'fix').length },
+  { id: 'faster', label: 'Make it faster', count: SERVICES.filter((service) => service.category === 'faster').length },
+  { id: 'team', label: 'Run it with you', count: SERVICES.filter((service) => service.category === 'team').length },
+];
+---
+
+<section class="section shell" id="services" aria-labelledby="services-title">
+  <SectionHeading id="services-title" index="02" label="services" title="Four ways I help." accent="Nine things I build." description="Build it from scratch, replace workflows that have become fragile, or put the system on infrastructure you own." />
+  <div class="service-filters" aria-label="Filter services" data-reveal>
+    {filters.map((filter, index) => (
+      <button type="button" class:list={['filter-button', { active: index === 0 }]} data-service-filter={filter.id} aria-pressed={index === 0 ? 'true' : 'false'}>
+        <span>{filter.label}</span><small>{String(filter.count).padStart(2, '0')}</small>
+      </button>
+    ))}
+  </div>
+  <div class="services-grid" data-reveal>
+    {SERVICES.map((service) => (
+      <article class="service-card" data-service-card={service.category} data-tilt>
+        <div class="service-visual">
+          <div class="service-figure"><span>fig. {service.index}</span><span>{service.category}</span></div>
+          <ServiceArtwork art={service.art} />
+          <p class="service-note">{service.note}</p>
+        </div>
+        <div class="service-copy">
+          <span class="service-index">{service.index} / 09</span>
+          <h3>{service.title}</h3>
+          <p>{service.description}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<script>
+  const filterButtons = document.querySelectorAll('[data-service-filter]');
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-service-filter');
+      filterButtons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      document.querySelectorAll('[data-service-card]').forEach((card) => {
+        const visible = category === 'all' || card.getAttribute('data-service-card') === category;
+        (card as HTMLElement).hidden = !visible;
+      });
+    });
+  });
+</script>

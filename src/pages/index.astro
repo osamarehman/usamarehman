@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import WorkShowcase from '../components/react/WorkShowcase';
+import Services from '../components/Services.astro';
+import Products from '../components/Products.astro';
+import About from '../components/About.astro';
+import Practice from '../components/Practice.astro';
+import Contact from '../components/Contact.astro';
+import { ArrowUpRight } from '../components/Icons';
+import type { WorkItem } from '../components/react/work-types';
+
+const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const featured: WorkItem[] = work.filter((entry) => entry.data.featured).map((entry) => ({
+  id: entry.id,
+  client: entry.data.client,
+  title: entry.data.title,
+  headlineMetric: entry.data.headlineMetric,
+  subtitle: entry.data.subtitle,
+  type: entry.data.type,
+  stack: entry.data.stack,
+  summary: entry.data.summary,
+  category: entry.data.category,
+  status: entry.data.status,
+  kind: entry.data.kind,
+  cover: entry.data.cover ? {
+    src: entry.data.cover.src,
+    width: entry.data.cover.width,
+    height: entry.data.cover.height,
+  } : undefined,
+  coverAlt: entry.data.coverAlt,
+  coverCaption: entry.data.coverCaption,
+  metrics: entry.data.metrics,
+}));
+const secondary = work.filter((entry) => !entry.data.featured);
+const runova = work.find((entry) => entry.id === 'runova-crm');
+---
+
+<BaseLayout>
+  <Hero />
+
+  <section class="section shell work-section" id="work" aria-labelledby="work-title">
+    <SectionHeading id="work-title" index="01" label="selected work" title="Real systems." accent="Measured results." description="A closer look at the workflows, architecture and production results, with real product screenshots." />
+    <WorkShowcase items={featured} client:visible />
+    <div class="more-work" data-reveal>
+      <p class="mono-label">More selected builds</p>
+      {secondary.map((entry) => (
+        <a class="more-work-row" href={`/work/${entry.id}`}>
+          <span>{String(entry.data.order).padStart(2, '0')}</span>
+          <strong>{entry.data.client}</strong>
+          <span>{entry.data.title}</span>
+          <span>{entry.data.headlineMetric}</span>
+          <ArrowUpRight size={16} />
+        </a>
+      ))}
+      <a class="text-link all-work-link" href="/work">Browse all work <span>→</span></a>
+    </div>
+  </section>
+
+  <Services />
+  {runova?.data.cover && <Products cover={runova.data.cover} />}
+  <About />
+  <Practice />
+  <Contact />
+</BaseLayout>

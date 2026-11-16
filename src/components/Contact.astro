@@ -1,0 +1,31 @@
+---
+import { SITE } from '../data/site';
+import ContactForm from './react/ContactForm';
+import { Phone } from './Icons';
+---
+
+<section class="section contact-section shell" id="contact" aria-labelledby="contact-title">
+  <div class="contact-heading" data-reveal>
+    <p class="mono-label"><span>07</span> // your turn</p>
+    <h2 id="contact-title">Send me the workflow.<br /><em>That's usually where the build starts.</em></h2>
+    <p>Describe the workflow that's costing you the most hours and the tools it touches. I read every message myself.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-terminal" data-reveal><ContactForm client:visible /></div>
+    <aside class="contact-aside" data-reveal>
+      <div class="phone-demo">
+        <div class="phone-demo-top"><span class="status-dot"></span><span>Live interactive demo</span><Phone size={17} /></div>
+        <div class="phone-waves" aria-hidden="true">{Array.from({ length: 24 }).map((_, index) => <i style={`--wave:${index}`}></i>)}</div>
+        <p class="mono-label">Capitol Improvements · VAPI</p>
+        <h3>Talk to the AI phone agent.</h3>
+        <p>It checks each rep's live calendar and books into the CRM.</p>
+        <a href="tel:+12408203353">(240) 820-3353 <span>↗</span></a>
+      </div>
+      <div class="direct-contact">
+        <p class="mono-label">Prefer ordinary email?</p>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <p>{SITE.hours}</p>
+      </div>
+    </aside>
+  </div>
+</section>

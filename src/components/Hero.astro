@@ -1,0 +1,47 @@
+---
+import { ArrowUpRight, Phone } from './Icons';
+import { SITE, PROOF_STATS } from '../data/site';
+import HeroExperience from './react/HeroExperience';
+import ClientRail from './ClientRail.astro';
+---
+
+<section class="hero shell" aria-labelledby="hero-title">
+  <div class="hero-grid">
+    <div class="hero-copy" data-reveal>
+      <p class="hero-kicker"><span class="status-dot"></span>{SITE.location}<span class="hero-kicker-separator">/</span><span data-local-clock>UTC+5</span></p>
+      <h1 id="hero-title">
+        I build the systems a business <em>runs on.</em>
+        <span>I stay on to run them.</span>
+      </h1>
+      <p class="hero-lead">{SITE.lead}</p>
+      <div class="hero-actions">
+        <a class="button" href="#work">Explore selected work <ArrowUpRight size={15} strokeWidth={1.7} /></a>
+        <a class="text-link" href="tel:+12408203353"><Phone size={15} strokeWidth={1.7} /> Call the AI phone agent</a>
+      </div>
+      <p class="hero-hours">{SITE.hours}</p>
+    </div>
+
+    <div class="hero-visual" data-reveal>
+      <div class="hero-fallback" aria-hidden="true">
+        <svg viewBox="0 0 640 560" fill="none">
+          <g class="fallback-grid"><path d="M80 440 320 320 560 440 320 560ZM160 400v120M240 360v160M320 320v240M400 360v160M480 400v120"/></g>
+          <g class="fallback-core">
+            <path d="m220 180 100-58 100 58-100 58Z"/><path d="M220 180v70l100 58 100-58v-70M220 215l100 58 100-58"/>
+            <path d="m220 260 100-58 100 58-100 58Z"/><path d="M220 260v70l100 58 100-58v-70M220 295l100 58 100-58"/>
+            <path d="m220 340 100-58 100 58-100 58Z"/><path d="M220 340v70l100 58 100-58v-70M220 375l100 58 100-58"/>
+          </g>
+          <g class="fallback-nodes"><circle cx="150" cy="190" r="7"/><circle cx="490" cy="230" r="7"/><circle cx="150" cy="350" r="7"/><circle cx="500" cy="370" r="7"/><path d="m157 190 75 30M408 290l75-55M157 350l75 25M408 360l85 10"/></g>
+        </svg>
+      </div>
+      <HeroExperience client:only="react" />
+    </div>
+  </div>
+
+  <div class="hero-proof" data-reveal>
+    {PROOF_STATS.slice(0, 4).map((stat) => (
+      <div class="hero-stat"><strong>{stat.value}</strong><span>{stat.label}</span></div>
+    ))}
+  </div>
+
+  <ClientRail />
+</section>

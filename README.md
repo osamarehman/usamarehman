@@ -1,49 +1,65 @@
 # usamarehman.dev
 
-Personal portfolio site for Usama Rehman - solo platform engineer.
+Personal portfolio for Usama Rehman, focused on custom business systems, AI agents, coded automations, and products.
 
-**Live:** [usamarehman.dev](https://www.usamarehman.dev) (pending DNS / Vercel deploy)
+**Live:** [usamarehman.dev](https://www.usamarehman.dev)
 
 ## Stack
 
-Single-page static SPA - no build step.
+- Astro 7 with static output
+- TypeScript and Astro content collections
+- React islands for the contact form and project showcase
+- Three.js with React Three Fiber for the interactive 3D scenes
+- Instrument Serif, Instrument Sans, and JetBrains Mono, self-hosted through Fontsource
+- Vercel deployment
 
-- HTML + CSS + JSX-via-Babel-standalone
-- React 18 from CDN
-- Fonts: Instrument Serif + Instrument Sans + JetBrains Mono
+The legacy static HTML, CSS, and JSX files remain at the repository root for reference during the migration. They are not part of the Astro build. The previous notes were placeholders and are intentionally not published in the new site.
 
-Vercel auto-serves static HTML at the repo root. No `vercel.json` or framework preset required.
-
-## Files
-
-- `index.html` - page shell + styles + script tags (home)
-- `portfolio.jsx` - components for the home page (Hero, Cases, FeaturedNotes, ...)
-- `cases-data.js` - single source of truth for `CASES` (platforms + client engagements)
-- `notes.html` + `notes.jsx` - blog archive
-- `article.html` + `article.jsx` - long-read template for essays (reads `?slug=` query param)
-- `project.html` + `project.jsx` - long-form case-study page (reads `?slug=` query param, renders `detailsMd` markdown)
-- `notes-data.js` - single source of truth for notes
-- `shared-ui.jsx` - Nav / Footer / Colophon / useTheme used by notes, article, project pages
-- `portfolio.css` - shared tokens, reveal animation, tweaks-panel overrides for sub-pages
-- `theme-init.js` - sets `data-theme` from `localStorage` before paint (no flash) + handles page-transition fade
-- `tweaks-panel.jsx` - developer-mode live editor (dormant in production)
-- `sitemap.xml`, `robots.txt`, `vercel.json` - deploy config
-
-## Edit
-
-- **Case study or hero copy** - edit the `CASES` array or the `Hero` / `Footer` components in `portfolio.jsx`. The unified `CASES` list holds both self-built platforms and client engagements; each entry may set whichever fields apply.
-- **Case study screenshot (optional)** - add `image: "/media/cases/your-shot.png"` and `imageAlt:` to a case record. The image appears inside the expanded case detail. Omit the field to hide the visual entirely (no placeholder).
-- **Long-form case details (optional)** - add `detailsMd:` to a case with a markdown string (supports headings, lists, links, **bold**, *italic*, code, images via `![alt](url)`, and block quotes). Rendered with `marked` inside the expanded case. Cases with no `lead`, `bullets`, `image`, or `detailsMd` collapse to non-expandable rows (no arrow shown).
-- **New essay** - add a record to `NOTES` in `notes-data.js`. If `status: "draft"` is omitted, the post counts as published and the date label shows on the archive row. Edit `ARTICLE_BODY` in `article.jsx` to add the long-form body (keyed by `slug`).
-- **Cover image (optional)** - add `cover: "/media/notes/your-image.jpg"` (or any URL) and an accessible `coverAlt:` description to a note record. The cover renders as a thumb in the notes list, a hero image at the top of the article, and replaces the auto-generated glyph in the home-page Featured Notes card. Omit the field to fall back gracefully.
-- Push to `main`; Vercel rebuilds on push.
-
-## Local preview
+## Run locally
 
 ```bash
-python3 -m http.server 8080
-# then open http://localhost:8080
+npm install
+npm run dev
 ```
+
+Astro serves the development site on port 4321 by default.
+
+## Verify and build
+
+```bash
+npm run check
+npm run build
+npm run preview
+```
+
+`npm run check` runs Astro and TypeScript diagnostics. `npm run build` writes the production site to `dist/`, generates responsive images, and creates the sitemap.
+
+## Edit content
+
+- Site copy, contact links, clients, services, products, process, skills, and proof stats: `src/data/site.ts`
+- Case studies: `src/content/work/*.md`
+- Collection schema: `src/content.config.ts`
+- Approved source screenshots: `src/assets/work/`
+- Global design tokens and responsive styles: `src/styles/global.css`
+- Hero 3D scene: `src/components/react/HeroExperience.tsx`
+- Project 3D scene: `src/components/react/WorkScene.tsx`
+
+Each case-study file controls its own summary, metrics, stack, cover, gallery, links, and publishing state. Set `draft: true` to exclude an entry. Set `featured: true` to include it in the home-page showcase. Run `npm run check` after editing frontmatter.
+
+## Image publishing rules
+
+- Runova CRM is a separate product, not the Capitol Improvements client CRM. Keep its `Demo data` captions.
+- Do not use the retired `content/screenshots/crm/` images.
+- Do not use `runova-crm/02-jobs-board.png`; its layout needs a retake.
+- Use only the supplied blurred Atrium Homes screenshots.
+- Do not publish the RME Solar screenshots without LunoMotion's approval.
+- Do not publish the unchecked Transformula business overview or clients images.
+
+The 3D scenes are progressive enhancements. Project copy and case studies remain available as static HTML, scenes pause off-screen, and reduced-motion preferences are respected.
+
+## Deploy
+
+Push to `main` to trigger the Vercel build. The build command is `npm run build`, and the output directory is `dist/`.
 
 ## License
 

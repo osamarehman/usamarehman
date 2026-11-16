@@ -1,0 +1,38 @@
+---
+import { SITE } from '../data/site';
+
+const links = [
+  { label: 'Work', href: '/#work' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Products', href: '/#products' },
+  { label: 'About', href: '/#about' },
+];
+---
+
+<header class="site-header" data-header>
+  <div class="header-inner shell">
+    <a class="brand" href="/" aria-label="Usama Rehman, home">
+      <span class="brand-mark" aria-hidden="true">u<span>.</span></span>
+      <span class="brand-copy">{SITE.name}<small>{SITE.role}</small></span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <div class="header-actions">
+      <a class="button button-small header-cta" href="/#contact">Start a project <span aria-hidden="true">↗</span></a>
+      <button class="icon-button" type="button" data-theme-toggle aria-label="Switch to dark theme">
+        <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg>
+      </button>
+      <button class="icon-button menu-toggle" type="button" data-menu-toggle aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-nav shell" id="mobile-menu" aria-label="Mobile navigation" hidden>
+    {links.map((link) => <a href={link.href}>{link.label}<span aria-hidden="true">↗</span></a>)}
+    <a href="/#contact">Start a project<span aria-hidden="true">↗</span></a>
+  </nav>
+</header>

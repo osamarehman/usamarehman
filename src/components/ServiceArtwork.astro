@@ -1,0 +1,44 @@
+---
+interface Props { art: string }
+const { art } = Astro.props;
+---
+
+<svg class="service-art" viewBox="0 0 280 160" fill="none" aria-hidden="true">
+  <path class="art-ground" d="M24 132h232M44 144h192" />
+  {art === 'crm' && <>
+    <g class="art-base"><path d="m85 45 55-28 55 28-55 28Z"/><path d="M85 45v54l55 28 55-28V45M85 63l55 28 55-28M85 81l55 28 55-28M85 99l55 28 55-28"/></g>
+    <g class="art-accent"><path d="m140 17 55 28v54l-55 28V73Z"/><circle cx="140" cy="72" r="5"/></g>
+  </>}
+  {art === 'phone' && <>
+    <g class="art-base"><rect x="103" y="19" width="74" height="116" rx="12"/><path d="M124 31h32M132 123h16M116 55h48M116 69h32M116 83h42"/></g>
+    <g class="art-accent"><path d="M88 57c-14 14-14 36 0 50M192 57c14 14 14 36 0 50M77 46c-20 22-20 50 0 72M203 46c20 22 20 50 0 72"/><circle cx="140" cy="98" r="7"/></g>
+  </>}
+  {art === 'portal' && <>
+    <g class="art-base"><rect x="50" y="33" width="180" height="94" rx="3"/><path d="M50 52h180M68 43h1M78 43h1M88 43h1M72 72h52v34H72zM141 72h66M141 86h52M141 100h59"/></g>
+    <g class="art-accent"><rect x="133" y="62" width="82" height="51" rx="2"/><path d="m146 99 14-13 12 7 18-20 13 9"/></g>
+  </>}
+  {art === 'sheet' && <>
+    <g class="art-base"><path d="M67 25h91l31 31v78H67Z"/><path d="M158 25v31h31M83 69h90M83 85h90M83 101h90M105 57v63M137 57v63"/></g>
+    <g class="art-accent"><path d="m177 91 28-28 25 25-28 28-25 3Z"/><path d="m205 63 10-10 25 25-10 10"/></g>
+  </>}
+  {art === 'workflow' && <>
+    <g class="art-base"><rect x="36" y="59" width="55" height="44" rx="5"/><rect x="177" y="24" width="65" height="42" rx="5"/><rect x="177" y="99" width="65" height="42" rx="5"/><path d="M91 81h38c18 0 18-36 48-36M129 81c18 0 18 39 48 39"/></g>
+    <g class="art-accent"><circle cx="130" cy="81" r="9"/><path d="M130 62v38M111 81h38M193 45h32M193 120h32"/></g>
+  </>}
+  {art === 'migration' && <>
+    <g class="art-base"><ellipse cx="76" cy="42" rx="35" ry="15"/><path d="M41 42v70c0 8 16 15 35 15s35-7 35-15V42M41 65c0 8 16 15 35 15s35-7 35-15M41 88c0 8 16 15 35 15s35-7 35-15"/><rect x="174" y="36" width="62" height="86" rx="4"/><path d="M188 56h34M188 72h34M188 88h34M188 104h22"/></g>
+    <g class="art-accent"><path d="M124 81h39M151 69l12 12-12 12"/><circle cx="145" cy="81" r="4"/></g>
+  </>}
+  {art === 'pipeline' && <>
+    <g class="art-base"><path d="M43 81h194M70 54v54M140 54v54M210 54v54"/><circle cx="70" cy="81" r="17"/><circle cx="140" cy="81" r="17"/><circle cx="210" cy="81" r="17"/></g>
+    <g class="art-accent"><path d="m62 81 6 6 11-14M132 81l6 6 11-14M202 81l6 6 11-14M70 42V25M140 42V25M210 42V25"/></g>
+  </>}
+  {art === 'server' && <>
+    <g class="art-base"><path d="m80 50 60-30 60 30-60 30Z"/><path d="M80 50v60l60 30 60-30V50M80 70l60 30 60-30M80 90l60 30 60-30M80 110l60 30 60-30"/></g>
+    <g class="art-accent"><path d="M140 80v60M99 60l20 10M99 80l20 10M99 100l20 10"/><circle cx="173" cy="63" r="4"/><circle cx="173" cy="83" r="4"/></g>
+  </>}
+  {art === 'operate' && <>
+    <g class="art-base"><circle cx="140" cy="80" r="50"/><circle cx="140" cy="80" r="24"/><path d="M140 30V14M140 146v-16M90 80H74M206 80h-16M105 45 93 33M187 127l-12-12M105 115l-12 12M187 33l-12 12"/></g>
+    <g class="art-accent"><path d="M140 56v24l17 17"/><circle cx="140" cy="80" r="5"/><path d="M140 20a60 60 0 0 1 55 36"/></g>
+  </>}
+</svg>
