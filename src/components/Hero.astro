@@ -29,9 +29,13 @@ import ClientRail from './ClientRail.astro';
   </div>
 
   <div class="hero-proof" data-reveal>
-    {PROOF_STATS.slice(0, 4).map((stat) => (
+    {PROOF_STATS.slice(0, 5).map((stat) => (
       <div class="hero-stat"><strong data-count="true">{stat.value}</strong><span>{stat.label}</span></div>
     ))}
+  </div>
+  <div class="hero-proof-foot" data-reveal>
+    <span><span class="status-dot"></span>Top Rated Plus on Upwork</span>
+    <a href={SITE.links.upwork} target="_blank" rel="noreferrer">View Upwork profile ↗</a>
   </div>
 
   <ClientRail />

@@ -49,9 +49,17 @@ const filters = [
         item.classList.toggle('active', active);
         item.setAttribute('aria-pressed', String(active));
       });
-      document.querySelectorAll('[data-service-card]').forEach((card) => {
+      let shown = 0;
+      document.querySelectorAll<HTMLElement>('[data-service-card]').forEach((card) => {
         const visible = category === 'all' || card.getAttribute('data-service-card') === category;
-        (card as HTMLElement).hidden = !visible;
+        card.hidden = !visible;
+        card.classList.remove('filter-in');
+        if (visible) {
+          // Restart the entrance so the remaining cards come in one after another
+          void card.offsetWidth;
+          card.style.setProperty('--f', String(shown++));
+          card.classList.add('filter-in');
+        }
       });
     });
   });

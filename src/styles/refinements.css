@@ -1262,3 +1262,117 @@ html[data-theme='dark'] .service-plate {
     animation: none !important;
   }
 }
+
+
+/* ---- Visual pass: tracking, type floor, one display voice, calmer accents, tighter layout ---- */
+
+/* 1. Heading tracking */
+.hero h1 { letter-spacing: -0.04em; }
+.hero h1 em, .hero h1 > span { letter-spacing: -0.03em; }
+.section-heading h2, .contact-heading h2, .case-hero h1 { letter-spacing: -0.04em; }
+.page-hero h1 { letter-spacing: -0.045em; }
+.page-hero h1 em, .contact-heading h2 em { letter-spacing: -0.03em; }
+.about-statement { letter-spacing: -0.035em; }
+.hero-stat strong, .case-metrics strong { letter-spacing: -0.04em; }
+.work-result h3, .work-index-copy h2, .case-sections h2, .case-gallery-heading h2 { letter-spacing: -0.035em; }
+.product-card h3 { letter-spacing: -0.03em; }
+
+/* 2. Type floor: 11px labels, 13-14px reading copy */
+.mono-label, .hero-kicker, .hero-hours, .client-rail-head, .client-comment, .client-code,
+.work-tabs button, .project-status, .work-subtitle, .work-mini-metrics span,
+.work-preview-head, .work-preview-controls, .work-preview-controls button, .workbench-status,
+.more-work-row > span:first-child, .filter-button small, .service-figure, .service-note, .service-index,
+.service-plate-caption, .image-caption, .product-proof span, .product-card-head, .product-card-bottom small,
+.profile-caption small, .skill-row > span, .phone-demo-top, .footer-time, .colophon,
+.mosaic-caption, .mosaic-sonar-toggle, .work-index-meta, .breadcrumbs, .case-meta dt,
+.case-cover figcaption, .gallery-item > figcaption, .lightbox figcaption, .next-project small,
+.intro-topline, .intro-progress-meta { font-size: 11px; }
+.brand-copy small, .client-name b { font-size: 10px; }
+.brand-copy { font-size: 13px; }
+.desktop-nav a, .button, .text-link, .footer-links > a, .client-name, .more-work-row > span { font-size: 13px; }
+.button-small, .filter-button, .hero-stat span, .profile-facts > div, .skill-row p,
+.direct-contact > p:last-child, .case-metrics span, .case-body-aside, .case-body-aside a { font-size: 12px; }
+.more-work-row > span:first-child { font-size: 11px; }
+.more-work-row strong, .skill-row h3 { font-size: 14px; }
+.product-card > p, .phone-demo > p:not(.mono-label), .case-meta dd { font-size: 13px; }
+.work-summary, .service-copy p, .section-description, .about-copy p, .process-step p,
+.product-feature-copy > p:not(.mono-label), .contact-heading > p:last-child,
+.case-gallery-heading > p:last-child, .work-index-copy > p:not(.work-index-title) { font-size: 14px; }
+.hero-lead, .case-intro > p, .page-hero > p:last-child { font-size: 16px; }
+.work-mini-metrics span, .project-status, .product-card-head, .service-figure { letter-spacing: 0.04em; }
+.profile-caption { flex-wrap: wrap; }
+
+/* 3. One display voice: serif stays in the logo only */
+.more-work-row > span:nth-child(4) { color: var(--ink-soft); font-family: inherit; font-size: 13px; font-style: normal; }
+.product-feature-copy h3 { font-family: inherit; font-size: clamp(34px, 3.4vw, 50px); letter-spacing: -0.04em; }
+.process-number { font-family: inherit; font-size: 40px; font-style: normal; font-weight: 300; letter-spacing: -0.04em; }
+.profile-caption > span { font-family: inherit; font-size: 16px; font-style: normal; font-weight: 550; letter-spacing: -0.02em; }
+.phone-demo h3 { font-family: inherit; font-size: 28px; letter-spacing: -0.035em; line-height: 1.1; }
+.direct-contact > a { font-family: inherit; font-size: clamp(16px, 1.45vw, 20px); font-style: normal; font-weight: 500; letter-spacing: -0.02em; }
+.footer-note { font-family: inherit; font-size: 16px; font-style: normal; line-height: 1.55; }
+.next-project > a > span { font-family: inherit; font-style: normal; letter-spacing: -0.04em; }
+
+/* 4. Accent only where it counts: hero, page heroes, contact */
+.section-heading h2 em { color: var(--muted); font-style: normal; font-weight: 400; letter-spacing: inherit; }
+.contact-heading h2 { max-width: none; }
+.contact-heading h2 em { display: block; margin-top: 0.14em; font-size: 0.68em; line-height: 1.1; }
+
+/* 5. Work screenshot fills its pane */
+.work-screenshot-button { padding: 0; }
+.work-flat-screenshot { position: absolute; inset: 0; max-height: none; object-fit: cover; object-position: top left; filter: none; }
+
+/* 6. One stat row, in the hero */
+.hero-proof { grid-template-columns: repeat(5, 1fr); }
+.hero-proof-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; padding-top: 14px; color: var(--muted); font-family: 'JetBrains Mono Variable', monospace; font-size: 11px; }
+.hero-proof-foot > span { display: inline-flex; align-items: center; gap: 10px; color: var(--ink-soft); }
+.hero-proof-foot a:hover { color: var(--accent); }
+
+/* 7. Dead space */
+.hero { padding-top: clamp(28px, 3.4vw, 48px); }
+.hero-visual { height: clamp(420px, 38vw, 540px); min-height: 420px; }
+.hero-proof { margin-top: clamp(36px, 4vw, 56px); }
+.product-card { min-height: 0; }
+.phone-demo { display: flex; flex-direction: column; }
+.phone-demo > p:not(.mono-label) { margin-bottom: 26px; }
+.phone-demo > a { margin-top: auto; }
+.skills-table { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 5vw, 72px); }
+.skill-row { grid-template-columns: 26px 120px minmax(0, 1fr); gap: 16px; }
+
+/* 8. Runova feature: whole screenshot, caption below it */
+.product-feature-visual { display: flex; min-height: 0; flex-direction: column; justify-content: center; }
+.product-feature-visual img { height: auto; object-fit: contain; }
+.image-caption { position: static; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0; background: var(--scene); backdrop-filter: none; }
+
+@media (max-width: 1180px) {
+  .work-scene-wrap { min-height: 0; }
+  .work-flat-screenshot { position: static; height: auto; max-height: 560px; }
+}
+
+@media (max-width: 960px) {
+  .hero-visual { height: 440px; margin-top: 0; }
+  .skills-table { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .hero-visual { height: 380px; min-height: 0; }
+  .hero-proof { grid-template-columns: repeat(2, 1fr); }
+  .hero-stat:nth-child(-n+4) { border-bottom: 1px solid var(--line); }
+  .hero-stat:nth-child(4) { border-right: 0; }
+  .hero-stat:nth-child(5) { grid-column: 1 / -1; padding-left: 0; }
+  .skill-row { grid-template-columns: 26px minmax(0, 1fr); gap: 12px; }
+  .contact-heading h2 em { font-size: 0.74em; }
+}
+
+@media (max-width: 520px) {
+  .hero-visual { height: 340px; }
+}
+
+.phone-waves { flex: 1 1 90px; height: auto; min-height: 90px; max-height: 200px; }
+.work-preview-controls button { flex: 0 0 auto; white-space: nowrap; }
+.work-preview-controls > span { min-width: 0; }
+
+@media (max-width: 520px) {
+  .hero h1 { font-size: clamp(36px, 10vw, 56px); }
+  .workbench-status > span:first-child { display: none; }
+  .workbench-status { justify-content: center; }
+}

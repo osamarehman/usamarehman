@@ -33,10 +33,11 @@
         cancelAnimationFrame(frame);
         try { sessionStorage.setItem('usamar.intro.v1', 'seen'); } catch (_) {}
         intro.classList.add('intro-leaving');
+        // Start the page reveals while the curtain is still lifting
+        window.setTimeout(() => window.dispatchEvent(new Event('portfolio:intro-complete')), 220);
         finishTimer = window.setTimeout(() => {
           intro.hidden = true;
           document.body.classList.remove('intro-active');
-          window.dispatchEvent(new Event('portfolio:intro-complete'));
           const main = document.querySelector<HTMLElement>('#main');
           main?.setAttribute('tabindex', '-1');
           main?.focus({ preventScroll: true });

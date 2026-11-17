@@ -18,7 +18,7 @@ const artFor = (kind: string) => kind === 'migration' ? 'migration' : kind === '
   <section class="work-index shell" aria-label="All case studies">
     {work.map((entry) => (
       <a class="work-index-card" href={`/work/${entry.id}`} data-reveal>
-        <div class:list={['work-index-visual', { 'work-index-blueprint': !entry.data.cover }]}>
+        <div class:list={['work-index-visual', 'vt-cover', { 'work-index-blueprint': !entry.data.cover }]} style={`view-transition-name: work-${entry.id}`}>
           {entry.data.cover ? <Image src={entry.data.cover} alt={entry.data.coverAlt || ''} widths={[640, 960, 1280]} sizes="(max-width: 800px) 100vw, 45vw" loading="lazy" /> : <ServiceArtwork art={artFor(entry.data.kind)} />}
         </div>
         <div class="work-index-copy">

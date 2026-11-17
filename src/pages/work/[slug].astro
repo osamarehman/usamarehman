@@ -45,11 +45,11 @@ const next = allWork[(currentIndex + 1) % allWork.length];
 
     <div class="case-cover shell" data-reveal>
       {data.cover ? (
-        <figure data-spotlight>
+        <figure class="vt-cover" style={`view-transition-name: work-${entry.id}`} data-spotlight>
           <Image src={data.cover} alt={data.coverAlt || ''} widths={[840, 1280, 1800, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
           <figcaption><span>{data.coverCaption}</span><span>Fig. {String(data.order).padStart(2, '0')}</span></figcaption>
         </figure>
-      ) : <div class="case-blueprint"><ServiceArtwork art={data.kind === 'migration' ? 'migration' : data.kind === 'pipeline' ? 'workflow' : data.kind === 'configurator' ? 'phone' : data.kind === 'portal' ? 'portal' : data.kind === 'product' ? 'crm' : 'sheet'} /></div>}
+      ) : <div class="case-blueprint vt-cover" style={`view-transition-name: work-${entry.id}`}><ServiceArtwork art={data.kind === 'migration' ? 'migration' : data.kind === 'pipeline' ? 'workflow' : data.kind === 'configurator' ? 'phone' : data.kind === 'portal' ? 'portal' : data.kind === 'product' ? 'crm' : 'sheet'} /></div>}
     </div>
 
     {data.metrics.length > 0 && (
@@ -113,12 +113,19 @@ const next = allWork[(currentIndex + 1) % allWork.length];
     let current = 0;
     let trigger: HTMLButtonElement | null = null;
 
-    const show = (index: number) => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const show = (index: number, direction = 0) => {
       current = (index + items.length) % items.length;
       const item = items[current];
       image.src = item.dataset.full || '';
       image.alt = item.dataset.alt || '';
       caption.textContent = item.dataset.caption || '';
+      if (direction && !reduced.matches) {
+        image.animate(
+          [{ opacity: 0, transform: `translateX(${direction * 24}px)` }, { opacity: 1, transform: 'translateX(0)' }],
+          { duration: 320, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+        );
+      }
     };
     const open = (index: number, button: HTMLButtonElement) => {
       trigger = button;
@@ -129,12 +136,12 @@ const next = allWork[(currentIndex + 1) % allWork.length];
     const close = () => dialog.close();
     items.forEach((item, index) => item.addEventListener('click', () => open(index, item)));
     gallery.querySelector('[data-lightbox-close]')?.addEventListener('click', close);
-    gallery.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(current - 1));
-    gallery.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(current + 1));
+    gallery.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(current - 1, -1));
+    gallery.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(current + 1, 1));
     dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
     dialog.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1); }
-      if (event.key === 'ArrowRight') { event.preventDefault(); show(current + 1); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1, -1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); show(current + 1, 1); }
     });
     dialog.addEventListener('close', () => {
       document.body.style.overflow = '';

@@ -1,5 +1,5 @@
 ---
-import { PROCESS, PROOF_STATS } from '../data/site';
+import { PROCESS } from '../data/site';
 import SectionHeading from './SectionHeading.astro';
 ---
 
@@ -15,10 +15,4 @@ import SectionHeading from './SectionHeading.astro';
       </li>
     ))}
   </ol>
-  <div class="proof-panel" data-reveal>
-    <div class="proof-panel-heading"><p class="mono-label">06 // the record</p><a href="https://www.upwork.com/freelancers/usamamughal95" target="_blank" rel="noreferrer">View Upwork profile ↗</a></div>
-    <div class="proof-grid">
-      {PROOF_STATS.map((stat) => <div class="proof-item"><strong data-count="true">{stat.value}</strong><span>{stat.label}</span></div>)}
-    </div>
-  </div>
 </section>

@@ -5,6 +5,7 @@ import '@fontsource/instrument-serif/400.css';
 import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
 import '../styles/refinements.css';
+import '../styles/motion.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE } from '../data/site';
@@ -48,7 +49,7 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
     <meta name="twitter:image" content={socialImage} />
     <meta name="google-site-verification" content="BkEn1Tsx2UXDJBXvt7isQOyqi_3Jl7o6GZ7FxHIF1nE" />
     <title>{title}</title>
-    <noscript><style>[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}.about-statement span{opacity:1!important}</style></noscript>
+    <noscript><style>[data-reveal],[data-reveal]>*,.hero-copy h1>span,.client-name,.section-heading h2,.section-heading h2 em,.service-visual,.service-copy,.process-step{opacity:1!important;clip-path:none!important;transform:none!important;filter:none!important}.about-statement span{opacity:1!important}</style></noscript>
     <script is:inline>
       (() => {
         try {
@@ -56,6 +57,9 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
           document.documentElement.dataset.theme = theme;
           document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0d0d0f' : '#f4f1ea';
         } catch (_) {}
+        window.addEventListener('pagereveal', (event) => {
+          if (event.viewTransition) document.documentElement.classList.add('vt-arrival');
+        });
       })();
     </script>
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -90,11 +94,31 @@ const socialImage = new URL(image, Astro.site ?? SITE.url);
       document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
         button.addEventListener('click', () => {
           const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-          root.dataset.theme = theme;
-          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0d0d0f' : '#f4f1ea');
-          try { localStorage.setItem('usamar.theme.v2', theme); } catch (_) {}
-          window.dispatchEvent(new CustomEvent('portfolio:theme', { detail: theme }));
-          updateThemeControls();
+          const apply = () => {
+            root.dataset.theme = theme;
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0d0d0f' : '#f4f1ea');
+            try { localStorage.setItem('usamar.theme.v2', theme); } catch (_) {}
+            window.dispatchEvent(new CustomEvent('portfolio:theme', { detail: theme }));
+            updateThemeControls();
+          };
+          if (reducedMotion.matches || !('startViewTransition' in document) || root.classList.contains('theme-switching')) {
+            apply();
+            return;
+          }
+          // Circular wipe that opens from the toggle
+          const rect = button.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+          const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+          root.classList.add('theme-switching');
+          const transition = document.startViewTransition(apply);
+          transition.ready.then(() => {
+            root.animate(
+              { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+              { duration: 650, easing: 'cubic-bezier(0.45, 0, 0.15, 1)', pseudoElement: '::view-transition-new(root)' },
+            );
+          }).catch(() => {});
+          transition.finished.finally(() => root.classList.remove('theme-switching'));
         });
       });
       updateThemeControls();

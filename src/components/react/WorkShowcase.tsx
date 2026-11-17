@@ -17,14 +17,19 @@ export default function WorkShowcase({ items }: { items: WorkItem[] }) {
     let frame = 0;
     const update = () => {
       frame = 0;
-      if (!canDriveScroll()) return;
       const track = document.querySelector<HTMLElement>('[data-work-track]');
       if (!track) return;
+      if (!canDriveScroll()) {
+        track.style.removeProperty('--work-progress');
+        return;
+      }
       const rect = track.getBoundingClientRect();
       const scrollable = track.offsetHeight - window.innerHeight;
       if (scrollable <= 0) return;
       const progress = Math.min(0.999, Math.max(0, -rect.top / scrollable));
       const next = Math.min(items.length - 1, Math.floor(progress * items.length));
+      // Fills the active tab's top line as the reader scrolls through that project
+      track.style.setProperty('--work-progress', (progress * items.length - next).toFixed(3));
       setActiveId((current) => current === items[next].id ? current : items[next].id);
     };
     const schedule = () => {
@@ -115,7 +120,7 @@ export default function WorkShowcase({ items }: { items: WorkItem[] }) {
 
           <div className="work-preview">
             <div className="work-preview-head"><span>// project screenshot</span><span>{active.client}</span></div>
-            <div className="work-scene-wrap">
+            <div className="work-scene-wrap vt-cover" style={{ viewTransitionName: `work-${active.id}` }}>
               <button className="work-screenshot-button" type="button" onClick={openViewer} aria-label={`Enlarge ${active.client} screenshot`}>
                 <img key={active.id} className="work-flat-screenshot" src={active.cover.src} alt={active.coverAlt || ''} width={active.cover.width} height={active.cover.height} />
                 <span className="work-screenshot-expand"><Expand size={16} /></span>
